@@ -2,7 +2,7 @@
 
 public class RandomChallengeGeneratorTests
 {
-    [Fact]
+    [Theory]
 	public void RandomChallengeGenerator2ChallengesShouldBeDifferent()
 	{
         RandomChallengeGenerator generator = new RandomChallengeGenerator();

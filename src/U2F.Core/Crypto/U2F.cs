@@ -7,8 +7,6 @@ namespace U2F.Core.Crypto
         public const String U2FVersion = "U2F_V2";
 
         public static ICrytoService Crypto { get; private set; }
-                private static readonly IChallengeGenerator ChallengeGenerator = new RandomChallengeGenerator();
-                public static readonly ICrypto Crypto = new BouncyCastleCrypto();
                 private const String AuthenticateTyp = "navigator.id.getAssertion";
                 private const String RegisterType = "navigator.id.finishEnrollment";
         //
