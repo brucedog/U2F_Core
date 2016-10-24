@@ -1,19 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace U2F.Core
+namespace U2F.Core.Crypto
 {
     public class U2F
     {
         public const String U2FVersion = "U2F_V2";
 
         public static ICrytoService Crypto { get; private set; }
-        //        private static readonly IChallengeGenerator ChallengeGenerator = new RandomChallengeGenerator();
-        //        public static readonly ICrypto Crypto = new BouncyCastleCrypto();
-        //        private const String AuthenticateTyp = "navigator.id.getAssertion";
-        //        private const String RegisterType = "navigator.id.finishEnrollment";
+                private static readonly IChallengeGenerator ChallengeGenerator = new RandomChallengeGenerator();
+                public static readonly ICrypto Crypto = new BouncyCastleCrypto();
+                private const String AuthenticateTyp = "navigator.id.getAssertion";
+                private const String RegisterType = "navigator.id.finishEnrollment";
         //
         //        /**
         //         * Initiates the registration of a device.

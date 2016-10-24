@@ -16,7 +16,7 @@ namespace U2F.Core.Models
             if (String.IsNullOrWhiteSpace(challenge) || String.IsNullOrWhiteSpace(keyHandle) || String.IsNullOrWhiteSpace(appId))
                 throw new ArgumentException("Invalid argument(s) were being passed.");
 
-            Version = U2F.U2FVersion;
+            Version = Crypto.U2F.U2FVersion;
             Challenge = challenge;
             AppId = appId;
             KeyHandle = keyHandle;

@@ -98,12 +98,12 @@ namespace U2F.Core.Models
                 throw new ArgumentException("Invalid argument(s) were being passed.");
 
             byte[] signedBytes = PackBytesToSign(
-                U2F.Crypto.Hash(appId),
-                U2F.Crypto.Hash(clientData),
+                Crypto.U2F.Crypto.Hash(appId),
+                Crypto.U2F.Crypto.Hash(clientData),
                 _keyHandle,
                 _userPublicKey);
 
-            U2F.Crypto.CheckSignature(_attestationCertificate, signedBytes, _signature);
+            Crypto.U2F.Crypto.CheckSignature(_attestationCertificate, signedBytes, _signature);
         }
 
         public DeviceRegistration CreateDevice()

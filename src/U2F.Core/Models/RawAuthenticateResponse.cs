@@ -103,13 +103,13 @@ namespace U2F.Core.Models
         public void CheckSignature(String appId, String clientData, byte[] publicKey)
         {
             byte[] signedBytes = PackBytesToSign(
-                U2F.Crypto.Hash(appId),
+                Crypto.U2F.Crypto.Hash(appId),
                 UserPresence,
                 Counter,
-                U2F.Crypto.Hash(clientData));
+                Crypto.U2F.Crypto.Hash(clientData));
 
-            U2F.Crypto.CheckSignature(
-                U2F.Crypto.DecodePublicKey(publicKey),
+            Crypto.U2F.Crypto.CheckSignature(
+                Crypto.U2F.Crypto.DecodePublicKey(publicKey),
                 signedBytes,
                 Signature);
         }
