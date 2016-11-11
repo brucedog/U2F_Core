@@ -68,7 +68,7 @@ namespace U2F.Core.Models
             }
         }
 
-        public String AsJson()
+        public string AsJson()
         {
             return RawClientData;
         }

@@ -63,8 +63,7 @@ namespace U2F.Core.Crypto
                 throw new U2fException(ErrorDecodingPublicKey, exception);
             }
         }
-
-        //TODO compare with unit test results
+        
         public bool CheckSignature(ICipherParameters certificate, byte[] signedbytes, byte[] signature)
         {
             try
@@ -94,7 +93,7 @@ namespace U2F.Core.Crypto
 
         public byte[] Hash(string str)
         {
-            return str.GetBytes();
+            return Hash(str.GetBytes());
         }
 
         public byte[] Hash(byte[] bytes)

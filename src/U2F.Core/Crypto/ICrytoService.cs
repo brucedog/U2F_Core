@@ -1,4 +1,3 @@
-using System;
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.X509;
 
@@ -41,14 +40,14 @@ namespace U2F.Core.Crypto
         /// Hashes the specified bytes.
         /// </summary>
         /// <param name="bytes">The bytes.</param>
-        /// <returns></returns>
+        /// <returns>byte array of hashed byte array</returns>
         byte[] Hash(byte[] bytes);
 
         /// <summary>
-        /// Hashes the specified string.
+        /// Hashes the specified string with sha256.
         /// </summary>
-        /// <param name="str">The string.</param>
-        /// <returns></returns>
-        byte[] Hash(String str);
+        /// <param name="stringToHash">The string to be hased.</param>
+        /// <returns>byte array of hashed string</returns>
+        byte[] Hash(string stringToHash);
     }
 }

@@ -57,14 +57,14 @@ namespace U2F.Core.Models
         public byte[] Signature { get; private set; }
 
         /// <summary>
-        /// Froms the base64.
+        /// From the base64.
         /// </summary>
         /// <param name="rawDataBase64">The raw data base64.</param>
-        /// <returns></returns>
+        /// <returns>the raw auth response</returns>
         public static RawAuthenticateResponse FromBase64(string rawDataBase64)
         {
             byte[] bytes = rawDataBase64.Base64StringToByteArray();
-
+            
             Stream stream = new MemoryStream(bytes);
             BinaryReader binaryReader = new BinaryReader(stream);
 

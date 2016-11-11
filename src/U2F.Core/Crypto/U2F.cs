@@ -4,7 +4,7 @@ using U2F.Core.Utils;
 
 namespace U2F.Core.Crypto
 {
-    public class U2F
+    public static class U2F
     {
         private static ICrytoService _crypto = new CryptoService();
         public const string U2FVersion = "U2F_V2";
