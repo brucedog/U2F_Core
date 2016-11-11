@@ -1,5 +1,6 @@
 using System;
-using System.Security.Cryptography.X509Certificates;
+using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.X509;
 
 namespace U2F.Core.Crypto
 {
@@ -18,7 +19,7 @@ namespace U2F.Core.Crypto
         /// <param name="src">The source.</param>
         /// <param name="signature">The signature.</param>
         /// <returns></returns>
-        // bool CheckSignature(ICipherParameters key, byte[] src, byte[] signature);
+         bool CheckSignature(ICipherParameters key, byte[] src, byte[] signature);
 
         /// <summary>
         /// Checks the signature.
@@ -34,7 +35,7 @@ namespace U2F.Core.Crypto
         /// </summary>
         /// <param name="encodedPublicKey">The encoded public key.</param>
         /// <returns></returns>
-        X509Certificate DecodePublicKey(byte[] encodedPublicKey);
+        ICipherParameters DecodePublicKey(byte[] encodedPublicKey);
 
         /// <summary>
         /// Hashes the specified bytes.
@@ -49,6 +50,5 @@ namespace U2F.Core.Crypto
         /// <param name="str">The string.</param>
         /// <returns></returns>
         byte[] Hash(String str);
-        
     }
 }

@@ -3,18 +3,18 @@ using System.Linq;
 
 namespace U2F.Core.Models
 {
-    public class RegisterResponseModel : BaseModel
+    public class RegisterResponse : BaseModel
     {
         private readonly ClientData _clientDataRef;
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="RegisterResponseModel"/> class.
+        /// Initializes a new instance of the <see cref="RegisterResponse"/> class.
         /// </summary>
         /// <param name="registrationData">The registration data.</param>
         /// <param name="clientData">The client data.</param>
-        public RegisterResponseModel(String registrationData, String clientData)
+        public RegisterResponse(string registrationData, string clientData)
         {
-            if (String.IsNullOrWhiteSpace(registrationData) || String.IsNullOrWhiteSpace(clientData))
+            if (string.IsNullOrWhiteSpace(registrationData) || string.IsNullOrWhiteSpace(clientData))
                 throw new ArgumentException("Invalid argument(s) were being passed.");
 
             RegistrationData = registrationData;
@@ -28,7 +28,7 @@ namespace U2F.Core.Models
         /// <value>
         /// The registration data.
         /// </value>
-        public String RegistrationData { get; private set; }
+        public string RegistrationData { get; private set; }
 
         /// <summary>
         /// Gets the Client data.
@@ -36,14 +36,14 @@ namespace U2F.Core.Models
         /// <value>
         /// The Client data.
         /// </value>
-        public String ClientData { get; private set; }
+        public string ClientData { get; private set; }
 
         public ClientData GetClientData()
         {
             return _clientDataRef;
         }
 
-        public String GetRequestId()
+        public string GetRequestId()
         {
             return GetClientData().Challenge;
         }
@@ -56,15 +56,15 @@ namespace U2F.Core.Models
             return hash;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
-            if (!(obj is RegisterResponseModel))
+            if (!(obj is RegisterResponse))
                 return false;
             if (this == obj)
                 return true;
             if (GetType() != obj.GetType())
                 return false;
-            RegisterResponseModel other = (RegisterResponseModel)obj;
+            RegisterResponse other = (RegisterResponse)obj;
             if (ClientData == null)
             {
                 if (other.ClientData != null)

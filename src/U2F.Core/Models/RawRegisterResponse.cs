@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using Org.BouncyCastle.X509;
 using U2F.Core.Exceptions;
 using U2F.Core.Utils;
 
@@ -45,9 +45,9 @@ namespace U2F.Core.Models
         /// </summary>
         /// <param name="rawDataBase64">raw string from client</param>
         /// <returns>RawRegisterResponse object</returns>
-        public static RawRegisterResponse FromBase64(String rawDataBase64)
+        public static RawRegisterResponse FromBase64(string rawDataBase64)
         {
-            if(String.IsNullOrWhiteSpace(rawDataBase64))
+            if(string.IsNullOrWhiteSpace(rawDataBase64))
                 throw new ArgumentException("Invalid argument were being passed.");
 
             byte[] bytes = rawDataBase64.Base64StringToByteArray();
@@ -60,23 +60,23 @@ namespace U2F.Core.Models
                 byte reservedByte = binaryReader.ReadByte();
                 if (reservedByte != RegistrationReservedByteValue)
                 {
-                    throw new U2fException(String.Format("Incorrect value of reserved byte. Expected: {0}. Was: {1}",
+                    throw new U2fException(string.Format("Incorrect value of reserved byte. Expected: {0}. Was: {1}",
                         RegistrationReservedByteValue, reservedByte));
                 }
 
                 byte[] publicKey = binaryReader.ReadBytes(65);
                 byte[] keyHandle = binaryReader.ReadBytes(binaryReader.ReadByte());
-                // TODO need to determine actual length of cert
-                X509Certificate x509Certificate = new X509Certificate(binaryReader.ReadBytes(320));
-                
+                X509CertificateParser x509CertificateParser = new X509CertificateParser();
+                X509Certificate attestationCertificate = x509CertificateParser.ReadCertificate(stream);
                 int size = (int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position);
+                
 
                 byte[] signature = binaryReader.ReadBytes(size);
 
                 RawRegisterResponse rawRegisterResponse = new RawRegisterResponse(
                     publicKey,
                     keyHandle,
-                    x509Certificate,
+                    attestationCertificate,
                     signature);
 
                 return rawRegisterResponse;
@@ -92,9 +92,9 @@ namespace U2F.Core.Models
             }
         }
 
-        public void CheckSignature(String appId, String clientData)
+        public void CheckSignature(string appId, string clientData)
         {
-            if (String.IsNullOrWhiteSpace(appId) || String.IsNullOrWhiteSpace(clientData))
+            if (string.IsNullOrWhiteSpace(appId) || string.IsNullOrWhiteSpace(clientData))
                 throw new ArgumentException("Invalid argument(s) were being passed.");
 
             byte[] signedBytes = PackBytesToSign(
@@ -112,9 +112,8 @@ namespace U2F.Core.Models
                 _keyHandle,
                 _userPublicKey,
                 // TODO investigate that this is correct
-                _attestationCertificate.GetPublicKey(),
+                _attestationCertificate.GetEncoded(),
                 DeviceRegistration.InitialCounterValue);
-            return null;
         }
 
         public byte[] PackBytesToSign(byte[] appIdHash,
@@ -139,7 +138,7 @@ namespace U2F.Core.Models
             return hash;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is RawRegisterResponse))
                 return false;

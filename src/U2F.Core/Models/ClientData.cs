@@ -8,25 +8,25 @@ namespace U2F.Core.Models
 {
     public class ClientData
     {
-        private const String TypeParam = "typ";
-        private const String ChallengeParam = "challenge";
-        private const String OriginParam = "origin";
+        private const string TypeParam = "typ";
+        private const string ChallengeParam = "challenge";
+        private const string OriginParam = "origin";
 
-        public String Type { get; private set; }
-        public String Challenge { get; private set; }
-        public String Origin { get; private set; }
-        public String RawClientData { get; private set; }
+        public string Type { get; private set; }
+        public string Challenge { get; private set; }
+        public string Origin { get; private set; }
+        public string RawClientData { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientData"/> class.
         /// </summary>
         /// <param name="clientData">The client data.</param>
         /// <exception cref="U2fException">ClientData has wrong format</exception>
-        public ClientData(String clientData)
+        public ClientData(string clientData)
         {
             try
             {
-                if(String.IsNullOrWhiteSpace(clientData))
+                if(string.IsNullOrWhiteSpace(clientData))
                     throw  new ArgumentException("Invalid argument passed.");
 
                 RawClientData = clientData.Base64StringToByteArray().GetString();
@@ -52,13 +52,13 @@ namespace U2F.Core.Models
             }
         }
 
-        public void CheckContent(String type, String challenge, HashSet<String> facets)
+        public void CheckContent(string type, string challenge, HashSet<string> facets)
         {
-            if (!type.Equals(Type) || String.IsNullOrWhiteSpace(type))
+            if (!type.Equals(Type) || string.IsNullOrWhiteSpace(type))
             {
                 throw new U2fException("Bad clientData: bad type " + type);
             }
-            if (!challenge.Equals(Challenge) || String.IsNullOrWhiteSpace(challenge))
+            if (!challenge.Equals(Challenge) || string.IsNullOrWhiteSpace(challenge))
             {
                 throw new U2fException("Wrong challenge signed in clientData");
             }
@@ -73,7 +73,7 @@ namespace U2F.Core.Models
             return RawClientData;
         }
 
-        private void VerifyOrigin(String origin, HashSet<String> allowedOrigins)
+        private void VerifyOrigin(string origin, HashSet<string> allowedOrigins)
         {
             if (!allowedOrigins.Contains(CanonicalizeOrigin(origin)))
             {
@@ -81,9 +81,9 @@ namespace U2F.Core.Models
             }
         }
 
-        private HashSet<String> CanonicalizeOrigins(HashSet<String> origins)
+        private HashSet<string> CanonicalizeOrigins(HashSet<string> origins)
         {
-            HashSet<String> result = new HashSet<string>();
+            HashSet<string> result = new HashSet<string>();
             foreach (string orgin in origins)
             {
                 result.Add(CanonicalizeOrigin(orgin));
@@ -91,9 +91,9 @@ namespace U2F.Core.Models
             return result;
         }
 
-        private String CanonicalizeOrigin(String url)
+        private string CanonicalizeOrigin(string url)
         {
-            if (String.IsNullOrWhiteSpace(url))
+            if (string.IsNullOrWhiteSpace(url))
                 throw new ArgumentException("Invalid argument(s) were being passed.");
             try
             {

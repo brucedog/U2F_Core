@@ -5,6 +5,14 @@ using Xunit;
 public class CryptoServiceTests
 {
     [Fact]
+    public void CryptoServiceConstructsProperly()
+    {
+        CryptoService cryptoService = new CryptoService();
+
+        Assert.NotNull(cryptoService);
+    }
+
+    [Fact]
 	public void CryptoService2ChallengesShouldBeDifferent()
 	{
         CryptoService generator = new CryptoService();

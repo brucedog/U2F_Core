@@ -61,7 +61,7 @@ namespace U2F.Core.Models
         /// </summary>
         /// <param name="rawDataBase64">The raw data base64.</param>
         /// <returns></returns>
-        public static RawAuthenticateResponse FromBase64(String rawDataBase64)
+        public static RawAuthenticateResponse FromBase64(string rawDataBase64)
         {
             byte[] bytes = rawDataBase64.Base64StringToByteArray();
 
@@ -100,7 +100,7 @@ namespace U2F.Core.Models
         /// <param name="appId">The application identifier.</param>
         /// <param name="clientData">The client data.</param>
         /// <param name="publicKey">The public key.</param>
-        public void CheckSignature(String appId, String clientData, byte[] publicKey)
+        public void CheckSignature(string appId, string clientData, byte[] publicKey)
         {
             byte[] signedBytes = PackBytesToSign(
                 Crypto.U2F.Crypto.Hash(appId),
@@ -153,7 +153,7 @@ namespace U2F.Core.Models
             return 23 + Signature.Sum(b => b + 31 + (int)Counter + UserPresence);
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is RawAuthenticateResponse))
                 return false;

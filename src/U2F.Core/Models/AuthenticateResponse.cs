@@ -3,21 +3,21 @@ using System.Linq;
 
 namespace U2F.Core.Models
 {
-    public class AuthenticateResponseModel : BaseModel
+    public class AuthenticateResponse : BaseModel
     {
         private readonly ClientData _clientDataRef;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticateResponseModel"/> class.
+        /// Initializes a new instance of the <see cref="AuthenticateResponse"/> class.
         /// </summary>
         /// <param name="clientData">The client data.</param>
         /// <param name="signatureData">The signature data.</param>
         /// <param name="keyHandle">The key handle.</param>
-        public AuthenticateResponseModel(String clientData, String signatureData, String keyHandle)
+        public AuthenticateResponse(string clientData, string signatureData, string keyHandle)
         {
-            if(String.IsNullOrWhiteSpace(clientData)
-                || String.IsNullOrWhiteSpace(signatureData)
-                || String.IsNullOrWhiteSpace(keyHandle))
+            if(string.IsNullOrWhiteSpace(clientData)
+                || string.IsNullOrWhiteSpace(signatureData)
+                || string.IsNullOrWhiteSpace(keyHandle))
                 throw new ArgumentException("Invalid argument(s) were being passed.");
 
             ClientData = clientData;
@@ -31,7 +31,7 @@ namespace U2F.Core.Models
             return _clientDataRef;
         }
 
-        public String GetRequestId()
+        public string GetRequestId()
         {
             return GetClientData().Challenge;
         }
@@ -43,7 +43,7 @@ namespace U2F.Core.Models
         /// <value>
         /// The signature data.
         /// </value>
-        public String SignatureData { get; private set; }
+        public string SignatureData { get; private set; }
 
         /// <summary>
         /// Gets the Client data.
@@ -51,7 +51,7 @@ namespace U2F.Core.Models
         /// <value>
         /// The Client data.
         /// </value>
-        public String ClientData { get; private set; }
+        public string ClientData { get; private set; }
 
         /// <summary>
         ///  keyHandle originally passed
@@ -59,7 +59,7 @@ namespace U2F.Core.Models
         /// <value>
         /// The key handle.
         /// </value>
-        public String KeyHandle { get; private set; }
+        public string KeyHandle { get; private set; }
 
         public override int GetHashCode()
         {
@@ -70,16 +70,16 @@ namespace U2F.Core.Models
             return hash;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
-            if (!(obj is AuthenticateResponseModel))
+            if (!(obj is AuthenticateResponse))
                 return false;
             if (this == obj)
                 return true;
             if (GetType() != obj.GetType())
                 return false;
 
-            AuthenticateResponseModel other = (AuthenticateResponseModel)obj;
+            AuthenticateResponse other = (AuthenticateResponse)obj;
 
             if (ClientData == null)
             {

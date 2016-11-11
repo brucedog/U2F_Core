@@ -98,7 +98,8 @@ namespace U2F.Core.Models
         /// </summary>
         /// <param name="clientCounter">The client counter.</param>
         /// <exception cref="U2fException">Counter value smaller than expected!</exception>
-        public void CheckAndUpdateCounter(uint clientCounter)
+        /// <returns>device counter</returns>
+        public uint CheckAndUpdateCounter(uint clientCounter)
         {
             if (clientCounter <= Counter)
             {
@@ -106,6 +107,7 @@ namespace U2F.Core.Models
                 throw new U2fException("Counter value smaller than expected!");
             }
             Counter = clientCounter;
+            return Counter;
         }
 
         public override int GetHashCode()
@@ -117,7 +119,7 @@ namespace U2F.Core.Models
             return hash;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (!(obj is DeviceRegistration))
                 return false;

@@ -3,32 +3,44 @@ using System.Linq;
 
 namespace U2F.Core.Models
 {
-    public class StartedRegistrationModel : BaseModel
+    public class StartedAuthentication : BaseModel
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="StartedRegistrationModel"/> class.
+        /// Initializes a new instance of the <see cref="StartedAuthentication"/> class.
         /// </summary>
         /// <param name="challenge">The challenge.</param>
         /// <param name="appId">The application identifier.</param>
-        public StartedRegistrationModel(String challenge, String appId)
+        /// <param name="keyHandle">The key handle.</param>
+        public StartedAuthentication(string challenge, string appId, string keyHandle)
         {
-            if(String.IsNullOrWhiteSpace(challenge) || String.IsNullOrWhiteSpace(appId))
+            if (string.IsNullOrWhiteSpace(challenge) || string.IsNullOrWhiteSpace(keyHandle) || string.IsNullOrWhiteSpace(appId))
                 throw new ArgumentException("Invalid argument(s) were being passed.");
 
             Version = Crypto.U2F.U2FVersion;
             Challenge = challenge;
             AppId = appId;
+            KeyHandle = keyHandle;
         }
 
         /// <summary>
-        /// Gets or sets the version.
+        /// Gets the Version
         /// Version of the protocol that the to-be-registered U2F token must speak. For
         /// the version of the protocol described herein, must be "U2F_V2"
         /// </summary>
         /// <value>
-        /// The version.
+        /// The key handle.
         /// </value>
-        public String Version { get; private set; }
+        public string Version { get; private set; }
+
+        /// <summary>
+        /// Gets the key handle.
+        /// websafe-base64 encoding of the key handle obtained from the U2F token
+        /// during registration.
+        /// </summary>
+        /// <value>
+        /// The key handle.
+        /// </value>
+        public string KeyHandle { get; private set; }
 
         /// <summary>
         /// Gets the challenge.
@@ -37,7 +49,7 @@ namespace U2F.Core.Models
         /// <value>
         /// The challenge.
         /// </value>
-        public String Challenge { get; private set; }
+        public string Challenge { get; private set; }
 
         /// <summary>
         /// Gets the application identifier.
@@ -49,26 +61,27 @@ namespace U2F.Core.Models
         /// <value>
         /// The application identifier.
         /// </value>
-        public String AppId { get; private set; }
+        public string AppId { get; private set; }
 
         public override int GetHashCode()
         {
-            int hash = Version.Sum(c => c + 31);
+            int hash = 23 + Version.Sum(c => c + 31);
             hash += Challenge.Sum(c => c + 31);
             hash += AppId.Sum(c => c + 31);
+            hash += KeyHandle.Sum(c => c + 31);
 
             return hash;
         }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
-            if (!(obj is StartedRegistrationModel))
+            if (!(obj is StartedAuthentication))
                 return false;
             if (this == obj)
                 return true;
             if (GetType() != obj.GetType())
                 return false;
-            StartedRegistrationModel other = (StartedRegistrationModel)obj;
+            StartedAuthentication other = (StartedAuthentication)obj;
             if (AppId == null)
             {
                 if (other.AppId != null)
@@ -82,6 +95,13 @@ namespace U2F.Core.Models
                     return false;
             }
             else if (!Challenge.Equals(other.Challenge))
+                return false;
+            if (KeyHandle == null)
+            {
+                if (other.KeyHandle != null)
+                    return false;
+            }
+            else if (!KeyHandle.Equals(other.KeyHandle))
                 return false;
             if (Version == null)
             {
