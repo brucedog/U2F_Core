@@ -6,17 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace U2F.Demo.Controllers
 {
-    public class HomeController : Controller
+    public class U2FController : Controller
     {
-        public IActionResult Index()
+        public U2FController()
         {
-            return View();
+            
         }
 
-        public IActionResult About()
+        public IActionResult Index()
         {
-            ViewData["Message"] = "Your application description page.";
-
             return View();
         }
         
