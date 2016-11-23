@@ -75,8 +75,10 @@ namespace UnitTests
                 TestConts.KEY_HANDLE_BASE64);
 
 
-            DeviceRegistration deviceRegistration = new DeviceRegistration(TestConts.KEY_HANDLE_BASE64_BYTE, TestConts.USER_PUBLIC_KEY_AUTHENTICATE_HEX,
-                Utils.Base64StringToByteArray(TestConts.ATTESTATION_CERTIFICATE), 0);
+            DeviceRegistration deviceRegistration = new DeviceRegistration(TestConts.KEY_HANDLE_BASE64_BYTE, 
+                TestConts.USER_PUBLIC_KEY_AUTHENTICATE_HEX,
+                TestConts.ATTESTATION_CERTIFICATE.Base64StringToByteArray(), 
+                0);
 
             uint orginalValue = deviceRegistration.Counter;
 
