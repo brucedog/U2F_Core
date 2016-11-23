@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using U2F.Core.Utils;
 
-namespace UnitTests
+namespace U2F.Core.UnitTests
 {
     public static class TestConts
     {

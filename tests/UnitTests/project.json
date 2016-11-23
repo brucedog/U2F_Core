@@ -1,4 +1,6 @@
-﻿{
+{
+  "title": "U2F Core Unit Tests",
+  "description": "Unit tests for the U2F.Core library",
   "version": "1.0.0-*",
   "testRunner": "xunit",
   "dependencies": {

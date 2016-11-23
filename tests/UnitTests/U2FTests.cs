@@ -2,7 +2,7 @@
 using U2F.Core.Utils;
 using Xunit;
 
-namespace UnitTests
+namespace U2F.Core.UnitTests
 {    
     public class U2FTests
     {

@@ -15,7 +15,7 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "U2F.Core", "src\U2F.Core\U2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C22ABDC2-97E5-4C12-802C-0877F09DEE03}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "UnitTests", "UnitTests\UnitTests.xproj", "{6D8A572D-9F40-4423-B87A-0243DFEE57E0}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "U2F.Core.UnitTests", "tests\UnitTests\U2F.Core.UnitTests.xproj", "{6D8A572D-9F40-4423-B87A-0243DFEE57E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
