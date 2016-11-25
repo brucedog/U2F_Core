@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using U2F.Demo.DataStore;
+using U2F.Demo.Services;
 
 namespace U2F.Demo
 {
@@ -23,7 +26,6 @@ namespace U2F.Demo
             }
             Configuration = builder.Build();
         }
-
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -34,10 +36,10 @@ namespace U2F.Demo
 
             services.AddMvc();
 
-            //            var connectionString = Startup.Configuration["connectionStrings:DBConnectionString"];
-            //            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));
-            //
-            //            services.AddScoped<IMembershipService, MembershipService>()
+            var connectionString = Configuration["connectionStrings:DBConnectionString"];
+            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));
+
+            services.AddScoped<IMembershipService, MembershipService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,8 +67,12 @@ namespace U2F.Demo
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    name: "default_route",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new {controller = "U2F", action = "Index"});
+//                routes.MapRoute(
+//                    name: "default",
+//                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
