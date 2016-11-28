@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using U2F.Demo.DataStore;
+using U2F.Demo.Models;
 using U2F.Demo.Services;
 
 namespace U2F.Demo
@@ -34,7 +37,34 @@ namespace U2F.Demo
             // Add framework services.
             services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddMvc();
+            // TODO double check identity role is configured correctly
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<U2FContext>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireLowercase = false;
+
+                // Lockout settings
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                options.Lockout.MaxFailedAccessAttempts = 10;
+
+                // Cookie settings
+                options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
+//                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
+//                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+                // User settings
+                options.User.RequireUniqueEmail = false;
+            });
+        
+
+        services.AddMvc();
 
             var connectionString = Configuration["connectionStrings:DBConnectionString"];
             services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));

@@ -18,7 +18,11 @@
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
     "bowser.TypeScript.DefinitelyTyped": "0.6.8",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
-    "Microsoft.AspNetCore.Diagnostics": "1.0.0"},
+    "Microsoft.AspNetCore.Diagnostics": "1.0.0",
+    "U2F.Core": "1.0.0-*",
+    "Microsoft.AspNetCore.Identity": "1.0.0",
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "1.0.0",
+    "WebGrease": "1.6.0"},
 
   "tools": {
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.0.0-preview2-final"

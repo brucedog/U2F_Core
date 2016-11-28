@@ -2,24 +2,14 @@
 
 namespace U2F.Demo.ViewModel
 {
-    public class StartRegisterViewModel
+    public class CompleteRegisterViewModel
     {
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
-
-        [Required]
+        
         [EmailAddress]
-        [Display(Name = "Email Address")]
         public string Email { get; set; }
-
-        [Required]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [Required]
-        [Display(Name = "Confirm Password")]
-        public string ConfirmPassword { get; set; }
 
         [Display(Name = "Challenge")]
         public string Challenge { get; set; }
@@ -29,5 +19,7 @@ namespace U2F.Demo.ViewModel
 
         [Display(Name = "App ID")]
         public string AppId { get; set; }
+
+        public string DeviceResponse { get; set; }
     }
 }

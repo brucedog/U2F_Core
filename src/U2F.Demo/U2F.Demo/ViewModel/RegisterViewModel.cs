@@ -2,7 +2,7 @@
 
 namespace U2F.Demo.ViewModel
 {
-    public class StartRegisterViewModel
+    public class RegisterViewModel
     {
         [Required]
         [Display(Name = "User name")]
@@ -10,7 +10,6 @@ namespace U2F.Demo.ViewModel
 
         [Required]
         [EmailAddress]
-        [Display(Name = "Email Address")]
         public string Email { get; set; }
 
         [Required]
