@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace U2F.Demo.Models
 {
-    public class User
+    public class User : IdentityUser
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-
         public string Name { get; set; }
-
-        [EmailAddress]
-        public string Email { get; set; }
-
-        public string Password { get; set; }
 
         public DateTime CreatedOn { get; set; }
 
