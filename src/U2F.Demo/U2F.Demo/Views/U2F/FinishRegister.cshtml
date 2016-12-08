@@ -7,7 +7,7 @@
 @section featured
 {
 
-    @using (Html.BeginForm("CompleteRegister", "Home", FormMethod.Post, new { id = "registerForm" }))
+    @using (Html.BeginForm("CompleteRegister", "U2F", FormMethod.Post, new { id = "registerForm" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)

@@ -1,5 +1,4 @@
-﻿@using System.Threading.Tasks
-@using U2F.Demo.ViewModel
+﻿@using U2F.Demo.ViewModel
 @model StartRegisterViewModel
 @{
     ViewBag.Title = "Register";
@@ -8,10 +7,10 @@
 
 @section featured {
 
-    @using (Html.BeginForm("BeginRegister", "Home", FormMethod.Post, new { id = "registerForm" }))
+    @using (Html.BeginForm("BeginRegister", "U2F", FormMethod.Post, new { id = "registerForm" }))
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <fieldset>
             <legend>Register Form</legend>
             <p>Enter a username, email and password.</p>
