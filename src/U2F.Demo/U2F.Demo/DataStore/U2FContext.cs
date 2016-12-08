@@ -1,11 +1,12 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using U2F.Demo.Models;
 
 namespace U2F.Demo.DataStore
 {
-    public sealed class U2FContext : DbContext
+    public sealed class U2FContext : IdentityDbContext<User>
     {
         private readonly ILogger<U2FContext> _logger;
 
@@ -34,6 +35,6 @@ namespace U2F.Demo.DataStore
 
         public DbSet<Device> Devices { get; set; }
 
-        public DbSet<AuthenticationRequest> AuthenticationRequests { get; set; }
+        public DbSet<AuthenticationRequest> AuthenticationRequests { get; set; }        
     }
 }
