@@ -14,46 +14,26 @@
         <fieldset>
             <legend>Register Form</legend>
             <p>Enter a username, email and password.</p>
-
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.UserName)
-
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.TextBoxFor(m => m.UserName)
-                    @Html.ValidationMessageFor(m => m.UserName)
-                </div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName"></span>
             </div>
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.Email)
-
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.TextBoxFor(m => m.Email)
-                    @Html.ValidationMessageFor(m => m.Email)
-                </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email"></span>
             </div>
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.Password)
 
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.PasswordFor(m => m.Password)
-                    @Html.ValidationMessageFor(m => m.Password)
-                </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password"></span>
             </div>
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.ConfirmPassword)
-
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.PasswordFor(m => m.ConfirmPassword)
-                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
-                </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword"></span>
             </div>
 
             @Html.HiddenFor(m => m.AppId)
