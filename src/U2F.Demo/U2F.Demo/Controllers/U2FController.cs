@@ -127,7 +127,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> BeginRegister([FromBody] StartRegisterViewModel viewModel)
+        public async Task<ActionResult> BeginRegister(StartRegisterViewModel viewModel)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(viewModel.UserName);
             if (!isUserRegistered)
