@@ -10,16 +10,21 @@ namespace U2F.Demo.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        [Required]
         public DateTime CreatedOn { get; set; }
 
         public DateTime UpdatedOn { get; set; }
 
+        [Required]
         public byte[] KeyHandle { get; set; }
 
+        [Required]
         public byte[] PublicKey { get; set; }
 
+        [Required]
         public byte[] AttestationCert { get; set; }
 
+        [Required]
         public int Counter { get; set; }
 
         public bool IsCompromised { get; set; }
