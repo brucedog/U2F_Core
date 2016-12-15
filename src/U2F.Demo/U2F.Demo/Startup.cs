@@ -19,7 +19,7 @@ namespace U2F.Demo
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+               // .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
             if (env.IsDevelopment())
@@ -62,9 +62,8 @@ namespace U2F.Demo
                 // User settings
                 options.User.RequireUniqueEmail = false;
             });
-        
 
-        services.AddMvc();
+            services.AddMvc();
 
             var connectionString = Configuration["connectionStrings:DBConnectionString"];
             services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));
@@ -84,6 +83,7 @@ namespace U2F.Demo
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
+                app.UseDatabaseErrorPage();
             }
             else
             {

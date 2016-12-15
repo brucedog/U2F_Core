@@ -44,7 +44,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> BeginLogin(StartLoginViewModel model)
+        public async Task<ActionResult> BeginLogin([FromBody]StartLoginViewModel model)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(model.UserName);
             bool areCredsValid = await _membershipService.IsValidUserNameAndPassword(model.UserName, model.Password);
@@ -92,7 +92,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CompletedLogin(CompleteLoginViewModel model)
+        public async Task<ActionResult> CompletedLogin([FromBody]CompleteLoginViewModel model)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(model.UserName);
             if (!isUserRegistered)
@@ -127,7 +127,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> BeginRegister([FromBody] RegisterViewModel viewModel)
+        public async Task<ActionResult> BeginRegister([FromBody] StartRegisterViewModel viewModel)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(viewModel.UserName);
             if (!isUserRegistered)
