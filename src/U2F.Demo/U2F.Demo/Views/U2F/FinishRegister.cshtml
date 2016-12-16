@@ -15,50 +15,26 @@
             <legend>Complete Registration Form</legend>
             <h3>Please plug in your device and touch the button.</h3>
 
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.UserName)
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.TextBoxFor(m => m.UserName, new { @readonly = true })
-                </div>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName"></span>
             </div>
-
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.AppId)
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    <input data-val="true" name="appId" readonly type="text" value="@Model.AppId" />
-                </div>
+            <div class="form-group">
+                <label asp-for="AppId"></label>
+                <input readonly asp-for="AppId" class="form-control" />
             </div>
-
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.Version)
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    <input data-val="true" name="version" readonly type="text" value="@Model.Version" />
-                </div>
+            <div class="form-group">
+                <label asp-for="Version"></label>
+                <input readonly asp-for="Version" class="form-control" />
             </div>
-
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.Challenge)
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    <input data-val="true" name="challenge" readonly type="text" value="@Model.Challenge" />
-                </div>
+            <div class="form-group">
+                <label asp-for="Challenge"></label>
+                <input readonly asp-for="Challenge" class="form-control" />
             </div>
-
-            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.LabelFor(m => m.DeviceResponse)
-
-                </div>
-                <div class=".col-xs-6 .col-sm-4">
-                    @Html.TextBoxFor(m => m.DeviceResponse, new { @readonly = true })
-                </div>
+            <div class="form-group">
+                <label asp-for="DeviceResponse"></label>
+                <input id="DeviceResponse" readonly asp-for="DeviceResponse" class="form-control" />
             </div>
             <br />
             <input type="submit" value="Complete Register" />
