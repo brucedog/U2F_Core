@@ -8,9 +8,6 @@ namespace U2F.Demo.ViewModel
         [Display(Name = "User name")]
         public string UserName { get; set; }
         
-        [EmailAddress]
-        public string Email { get; set; }
-
         [Display(Name = "Challenge")]
         public string Challenge { get; set; }
 
