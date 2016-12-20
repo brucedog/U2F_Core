@@ -39,10 +39,10 @@ namespace U2F.Demo.Services
         public async Task<bool> SaveNewUser(string userName, string password, string email)
         {
             bool result = await IsUserRegistered(userName);
-            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email)|| !result )
+            if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email)|| result)
                 return false;
 
-            User newUser = new User {Name = userName.Trim(), Email = email.Trim(), CreatedOn = DateTime.Now};
+            User newUser = new User {Name = userName.Trim(), Email = email.Trim(), CreatedOn = DateTime.Now, UserName = userName.Trim()};
             IdentityResult userCreatedResult = await _userManager.CreateAsync(newUser, password.Trim());
 
             if (userCreatedResult.Succeeded)
@@ -76,7 +76,8 @@ namespace U2F.Demo.Services
              new AuthenticationRequest
              {
                  AppId = startedRegistration.AppId,
-                 Challenge = startedRegistration.Challenge
+                 Challenge = startedRegistration.Challenge,
+                 Version = Core.Crypto.U2F.U2FVersion
              });
 
             user.UpdatedOn = DateTime.Now;
@@ -232,7 +233,10 @@ namespace U2F.Demo.Services
 
             if (!string.IsNullOrWhiteSpace(username))
             {
-                user = await _dataContext.Users.FirstAsync(person => person.Name == username.Trim());
+                if (await _dataContext.Users.AnyAsync(person => person.Name == username.Trim()))
+                {
+                    user = await _dataContext.Users.FirstAsync(person => person.Name == username.Trim());
+                }
             }
 
             return user;

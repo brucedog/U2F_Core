@@ -130,7 +130,7 @@ namespace U2F.Demo.Controllers
         public async Task<ActionResult> BeginRegister(StartRegisterViewModel viewModel)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(viewModel.UserName);
-            if (!isUserRegistered)
+            if (isUserRegistered)
             {
                 ModelState.AddModelError("CustomError", "User is already registered.");
                 return View("Register", viewModel);
