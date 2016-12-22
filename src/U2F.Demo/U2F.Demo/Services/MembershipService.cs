@@ -16,7 +16,7 @@ namespace U2F.Demo.Services
     public class MembershipService : IMembershipService
     {
         // NOTE: THIS HAS TO BE UPDATED TO MATCH YOUR SITE/EXAMPLE and sites must be https for chrome plugin
-        private const string DemoAppId = "https://localhost:44301";
+        private const string DemoAppId = "https://localhost:44340";
         private readonly SHA256 _sha256 = SHA256.Create();
         private readonly U2FContext _dataContext;
         private readonly UserManager<User> _userManager;
