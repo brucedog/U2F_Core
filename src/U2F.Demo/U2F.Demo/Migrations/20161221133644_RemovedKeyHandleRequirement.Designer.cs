@@ -8,9 +8,10 @@ using U2F.Demo.DataStore;
 namespace U2F.Demo.Migrations
 {
     [DbContext(typeof(U2FContext))]
-    partial class U2FContextModelSnapshot : ModelSnapshot
+    [Migration("20161221133644_RemovedKeyHandleRequirement")]
+    partial class RemovedKeyHandleRequirement
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
