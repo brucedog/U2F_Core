@@ -174,7 +174,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CompleteRegister([FromBody] CompleteRegisterViewModel value)
+        public async Task<ActionResult> CompleteRegister(CompleteRegisterViewModel value)
         {
             if (!string.IsNullOrWhiteSpace(value.DeviceResponse)
                 && !string.IsNullOrWhiteSpace(value.UserName))
