@@ -8,8 +8,7 @@ namespace U2F.Demo.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
-        [Required]
+        
         public string KeyHandle { get; set; }
 
         [Required]
