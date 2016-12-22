@@ -17,6 +17,7 @@ namespace U2F.Demo.ViewModel
         [Display(Name = "App ID")]
         public string AppId { get; set; }
 
+        [Display(Name = "Device Response")]
         public string DeviceResponse { get; set; }
     }
 }
