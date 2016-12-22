@@ -8,7 +8,7 @@
 
 @section featured {
 
-    @using (Html.BeginForm("BeginLogin", "Home"))
+    @using (Html.BeginForm("BeginLogin", "U2F"))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
