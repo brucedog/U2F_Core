@@ -71,6 +71,8 @@ namespace U2F.Demo.Services
 
             if (user.AuthenticationRequest == null)
                 user.AuthenticationRequest = new List<AuthenticationRequest>();
+            if(user.DeviceRegistrations == null)
+                user.DeviceRegistrations = new List<Device>();
 
             user.AuthenticationRequest.Add(
              new AuthenticationRequest
@@ -100,9 +102,7 @@ namespace U2F.Demo.Services
 
             User user = await FindUserByUsername(userName);
 
-            if (user == null
-                || user.AuthenticationRequest == null
-                || user.AuthenticationRequest.Count == 0)
+            if (user?.AuthenticationRequest == null || user.AuthenticationRequest.Count == 0)
                 return false;
 
 
@@ -235,7 +235,7 @@ namespace U2F.Demo.Services
             {
                 if (await _dataContext.Users.AnyAsync(person => person.Name == username.Trim()))
                 {
-                    user = await _dataContext.Users.FirstAsync(person => person.Name == username.Trim());
+                    user = await _dataContext.Users.Include(i => i.AuthenticationRequest).FirstAsync(person => person.Name == username.Trim());
                 }
             }
 
