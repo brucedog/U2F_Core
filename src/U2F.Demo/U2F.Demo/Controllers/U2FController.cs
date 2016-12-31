@@ -185,7 +185,7 @@ namespace U2F.Demo.Controllers
                         ? "Registration was successful."
                         : "Registration failed.";
 
-                    return View("SuccessfullRegister", new CompleteRegisterViewModel { UserName = value.UserName, DeviceResponse = value.DeviceResponse });
+                    return View("SucessfulRegister", new CompleteRegisterViewModel { UserName = value.UserName, DeviceResponse = value.DeviceResponse });
                 }
                 catch (Exception e)
                 {
