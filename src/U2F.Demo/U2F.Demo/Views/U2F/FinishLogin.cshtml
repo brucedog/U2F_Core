@@ -5,7 +5,7 @@
 }
 
 <h2>Finish Authentication</h2>
-@using (Html.BeginForm("CompletedLogin", "Home", FormMethod.Post, new { id = "loginForm" }))
+@using (Html.BeginForm("CompletedLogin", "U2F", FormMethod.Post, new { id = "loginForm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
