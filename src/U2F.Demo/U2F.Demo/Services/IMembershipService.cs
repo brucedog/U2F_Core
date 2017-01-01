@@ -35,5 +35,10 @@ namespace U2F.Demo.Services
         Task<bool> SaveNewUser(string username, string password, string emailAddress);
 
         Task<bool> CompleteRegistration(string userName, string deviceResponse);
+
+        /// <summary>
+        /// Signs user out
+        /// </summary>
+        Task SignOut();
     }
 }

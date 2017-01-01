@@ -208,7 +208,8 @@ namespace U2F.Demo.Services
                 {
                     AppId = startedAuthentication.AppId,
                     Challenge = startedAuthentication.Challenge,
-                    KeyHandle = startedAuthentication.KeyHandle
+                    KeyHandle = startedAuthentication.KeyHandle,
+                    Version = startedAuthentication.Version
                 });
             }
             user.UpdatedOn = DateTime.Now;
@@ -225,6 +226,11 @@ namespace U2F.Demo.Services
             return result.Succeeded;                
         }
 
+        public async Task SignOut()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
         #endregion
 
         private async Task<User> FindUserByUsername(string username)
@@ -235,7 +241,10 @@ namespace U2F.Demo.Services
             {
                 if (await _dataContext.Users.AnyAsync(person => person.Name == username.Trim()))
                 {
-                    user = await _dataContext.Users.Include(i => i.AuthenticationRequest).FirstAsync(person => person.Name == username.Trim());
+                    user = await _dataContext.Users
+                        .Include(i => i.AuthenticationRequest)
+                        .Include(i => i.DeviceRegistrations)
+                        .FirstAsync(person => person.Name == username.Trim());
                 }
             }
 
@@ -250,6 +259,6 @@ namespace U2F.Demo.Services
             var results = _sha256.ComputeHash(bytes);
 
             return Convert.ToBase64String(results);
-        }        
+        }
     }
 }
