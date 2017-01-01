@@ -22,19 +22,19 @@
             </div>
             <div class="form-group">
                 <label asp-for="AppId"></label>
-                <input readonly asp-for="AppId" class="form-control" />
+                @Html.TextBoxFor(m => m.AppId, new { @readonly = "readonly", @class = "form-control" })
             </div>
             <div class="form-group">
                 <label asp-for="Version"></label>
-                <input readonly asp-for="Version" class="form-control" />
+                @Html.TextBoxFor(m => m.Version, new { @readonly = "readonly", @class = "form-control" })                
             </div>
             <div class="form-group">
                 <label asp-for="Challenge"></label>
-                <input readonly asp-for="Challenge" class="form-control" />
+                @Html.TextBoxFor(m => m.Challenge, new { @readonly = "readonly", @class = "form-control" })                
             </div>
             <div class="form-group">
                 <label asp-for="DeviceResponse"></label>
-                <input id="DeviceResponse" readonly asp-for="DeviceResponse" class="form-control" />
+                @Html.TextBoxFor(m => m.DeviceResponse, new { @class = "form-control" })
             </div>
             <br />
             <input type="submit" value="Complete Register" />
