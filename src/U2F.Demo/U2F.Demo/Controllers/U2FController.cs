@@ -44,7 +44,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> BeginLogin([FromBody]StartLoginViewModel model)
+        public async Task<ActionResult> BeginLogin(StartLoginViewModel model)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(model.UserName);
             bool areCredsValid = await _membershipService.IsValidUserNameAndPassword(model.UserName, model.Password);
@@ -92,7 +92,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CompletedLogin([FromBody]CompleteLoginViewModel model)
+        public async Task<ActionResult> CompletedLogin(CompleteLoginViewModel model)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(model.UserName);
             if (!isUserRegistered)
@@ -198,6 +198,15 @@ namespace U2F.Demo.Controllers
 
             ModelState.AddModelError("CustomError", "bad username/device response");
             return View("FinishRegister", value);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> LogOff()
+        {
+            await _membershipService.SignOut();
+            _logger.LogInformation(4, "User logged out.");
+            return Index();
         }
     }
 }
