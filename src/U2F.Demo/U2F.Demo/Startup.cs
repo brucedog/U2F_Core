@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -57,10 +58,14 @@ namespace U2F.Demo
 
                 // Cookie settings
                 options.Cookies.ApplicationCookie.ExpireTimeSpan = TimeSpan.FromDays(150);
-//                options.Cookies.ApplicationCookie.LoginPath = "/Account/LogIn";
-//                options.Cookies.ApplicationCookie.LogoutPath = "/Account/LogOff";
+                options.Cookies.ApplicationCookie.LoginPath = "/U2F/Login";
+                options.Cookies.ApplicationCookie.LogoutPath = "/U2F/LogOff";
+                options.Cookies.ApplicationCookie.CookieName = "U2FDemo";
+                options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
+                options.Cookies.ApplicationCookie.AuthenticationScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Cookies.ApplicationCookie.ReturnUrlParameter = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.ReturnUrlParameter;
                 // User settings
-                options.User.RequireUniqueEmail = false;
+                options.User.RequireUniqueEmail = false;                
             });
 
             services.AddMvc();
@@ -94,15 +99,14 @@ namespace U2F.Demo
 
             app.UseStaticFiles();
 
+            app.UseIdentity();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default_route",
                     template: "{controller}/{action}/{id?}",
                     defaults: new {controller = "U2F", action = "Index"});
-//                routes.MapRoute(
-//                    name: "default",
-//                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
