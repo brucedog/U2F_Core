@@ -43,7 +43,7 @@ namespace U2F.Demo.Controllers
             return View("Index", user);
         }
 
-        public void AddDevice(string deviceResponse)
+        public async Task<IActionResult> AddDevice(string deviceResponse)
         {
             try
             {
@@ -52,15 +52,18 @@ namespace U2F.Demo.Controllers
                     ModelState.AddModelError("", "User has timed out.");
                     RedirectToAction("Login", "U2F");
                 }
-                _membershipService.CompleteRegistration(HttpContext.User.Identity.Name, deviceResponse);
+                bool result = await _membershipService.CompleteRegistration(HttpContext.User.Identity.Name, deviceResponse);
+                if(result)
+                    return Ok();
             }
             catch (Exception exception)
             {
                 _logger.LogError(exception.Message);
+                return StatusCode(500);
             }
+            return BadRequest();
         }
-
-        // TODO need to validate
+        
         public async Task<IActionResult> GetChallenge()
         {
             try
@@ -74,7 +77,7 @@ namespace U2F.Demo.Controllers
                     Version = serverRegisterResponse[0].version
                 };
 
-                return new JsonResult(Ok(JsonConvert.SerializeObject(registerModel)));
+                return new JsonResult(JsonConvert.SerializeObject(registerModel));
             }
             catch (Exception exception)
             {
@@ -82,8 +85,7 @@ namespace U2F.Demo.Controllers
             }
             return NoContent();
         }
-
-        // TODO need to validate
+        
         public async Task<IActionResult> DeviceInfo(int deviceId)
         {
             try
@@ -94,7 +96,7 @@ namespace U2F.Demo.Controllers
                     RedirectToAction("Login", "U2F");
                 }
 
-                User user = await _dataContext.Users.FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
+                User user = await _dataContext.Users.Include(i => i.DeviceRegistrations).FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
                 Device device = user.DeviceRegistrations.FirstOrDefault(f => f.Id == deviceId);
                 dynamic formattedResult = new
                 {
@@ -104,7 +106,7 @@ namespace U2F.Demo.Controllers
                     Counter = device.Counter,
                     UpdatedOn = device.UpdatedOn
                 };
-                return Ok(formattedResult);
+                return new JsonResult(JsonConvert.SerializeObject(formattedResult));
             }
             catch (Exception exception)
             {
