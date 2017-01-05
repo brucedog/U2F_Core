@@ -206,7 +206,7 @@ namespace U2F.Demo.Controllers
         {
             await _membershipService.SignOut();
             _logger.LogInformation(4, "User logged out.");
-            return Index();
+            return RedirectToAction("Index", "U2F");
         }
     }
 }
