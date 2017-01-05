@@ -36,10 +36,10 @@ namespace U2F.Demo.Controllers
             if (!HttpContext.User.Identity.IsAuthenticated)
             {
                 ModelState.AddModelError("", "User has timed out.");
-                RedirectToAction("Login", "Home");
+                RedirectToAction("Login", "U2F");
             }
 
-            var user = await _dataContext.Users.FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
+            var user = await _dataContext.Users.Include(i => i.DeviceRegistrations).FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
             return View("Index", user);
         }
 
@@ -50,7 +50,7 @@ namespace U2F.Demo.Controllers
                 if (!HttpContext.User.Identity.IsAuthenticated)
                 {
                     ModelState.AddModelError("", "User has timed out.");
-                    RedirectToAction("Login", "Home");
+                    RedirectToAction("Login", "U2F");
                 }
                 _membershipService.CompleteRegistration(HttpContext.User.Identity.Name, deviceResponse);
             }
@@ -91,7 +91,7 @@ namespace U2F.Demo.Controllers
                 if (!HttpContext.User.Identity.IsAuthenticated)
                 {
                     ModelState.AddModelError("", "User has timed out.");
-                    RedirectToAction("Login", "Home");
+                    RedirectToAction("Login", "U2F");
                 }
 
                 User user = await _dataContext.Users.FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
