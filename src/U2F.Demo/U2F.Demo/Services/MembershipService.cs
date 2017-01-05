@@ -93,8 +93,7 @@ namespace U2F.Demo.Services
                 Version = startedRegistration.Version
             };
         }
-
-        // TODO 
+        
         public async Task<bool> CompleteRegistration(string userName, string deviceResponse)
         {
             if (string.IsNullOrWhiteSpace(deviceResponse))
@@ -249,16 +248,6 @@ namespace U2F.Demo.Services
             }
 
             return user;
-        }
-
-        private string HashPassword(string password)
-        {
-            // TODO salt password
-            byte[] bytes = new byte[password.Length * sizeof(char)];
-            Buffer.BlockCopy(password.ToCharArray(), 0, bytes, 0, bytes.Length);
-            var results = _sha256.ComputeHash(bytes);
-
-            return Convert.ToBase64String(results);
         }
     }
 }
