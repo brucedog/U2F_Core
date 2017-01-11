@@ -230,9 +230,7 @@ namespace U2F.Demo.Services
             await _signInManager.SignOutAsync();
         }
 
-        #endregion
-
-        private async Task<User> FindUserByUsername(string username)
+        public async Task<User> FindUserByUsername(string username)
         {
             User user = null;
 
@@ -249,5 +247,7 @@ namespace U2F.Demo.Services
 
             return user;
         }
+
+        #endregion
     }
 }

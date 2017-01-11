@@ -4,10 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using U2F.Demo.DataStore;
 using U2F.Demo.Models;
 using U2F.Demo.Services;
 using U2F.Core.Utils;
@@ -18,15 +16,12 @@ namespace U2F.Demo.Controllers
     [Authorize]
     public class ProfileController : Controller
     {
-        private readonly U2FContext _dataContext;
         private readonly IMembershipService _membershipService;
         private readonly ILogger<ProfileController> _logger;
 
-        public ProfileController(U2FContext dataContext, 
-            IMembershipService membershipService,
+        public ProfileController(IMembershipService membershipService,
             ILogger<ProfileController> logger)
         {
-            _dataContext = dataContext;
             _membershipService = membershipService;
             _logger = logger;
         }
@@ -39,7 +34,7 @@ namespace U2F.Demo.Controllers
                 RedirectToAction("Login", "U2F");
             }
 
-            var user = await _dataContext.Users.Include(i => i.DeviceRegistrations).FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
+            var user = await _membershipService.FindUserByUsername(HttpContext.User.Identity.Name);
             return View("Index", user);
         }
 
@@ -96,7 +91,7 @@ namespace U2F.Demo.Controllers
                     RedirectToAction("Login", "U2F");
                 }
 
-                User user = await _dataContext.Users.Include(i => i.DeviceRegistrations).FirstAsync(person => person.Name == HttpContext.User.Identity.Name);
+                User user = await _membershipService.FindUserByUsername(HttpContext.User.Identity.Name);
                 Device device = user.DeviceRegistrations.FirstOrDefault(f => f.Id == deviceId);
                 dynamic formattedResult = new
                 {

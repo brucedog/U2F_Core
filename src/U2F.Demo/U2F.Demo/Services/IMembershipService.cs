@@ -40,5 +40,10 @@ namespace U2F.Demo.Services
         /// Signs user out
         /// </summary>
         Task SignOut();
+
+        /// <summary>
+        /// Returns a complete user object via its userName
+        /// </summary>
+        Task<User> FindUserByUsername(string username);
     }
 }
