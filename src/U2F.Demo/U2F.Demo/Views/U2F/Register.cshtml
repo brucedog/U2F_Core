@@ -1,0 +1,49 @@
+﻿@using U2F.Demo.ViewModel
+@model StartRegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured {
+
+    @using (Html.BeginForm("BeginRegister", "U2F", FormMethod.Post, new { id = "registerForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <fieldset>
+            <legend>Register Form</legend>
+            <p>Enter a username, email and password.</p>
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword"></label>
+                <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+
+            @Html.HiddenFor(m => m.AppId)
+            @Html.HiddenFor(m => m.Challenge)
+            @Html.HiddenFor(m => m.Version)
+            <br />
+            <input type="submit" value="Register" />
+        </fieldset>
+    }
+}
+
+@section Scripts {
+}

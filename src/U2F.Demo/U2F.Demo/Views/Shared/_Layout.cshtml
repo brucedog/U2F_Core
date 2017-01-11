@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ASP.NET Core Application U2F.Core Demo</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <script src="@Url.Content("~/js/u2f-api.js")"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <script src="@Url.Content("~/js/u2f-api.min.js")"></script>
+    </environment>
+    @RenderSection("specialJS", required: false)
+</head>
+<body>
+
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">ASP.NET Core U2F.Core DEMO</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    using (Html.BeginForm("LogOff", "U2F", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                @Html.ActionLink("Hello " + User.Identity.Name + " !", "Index", "Profile", routeValues: null, htmlAttributes: new { title = "Manage" })
+                            </li>
+                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                        </ul>
+                    }
+                }
+                else
+                {
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Login", "Login", "U2F")</li>
+                        <li>@Html.ActionLink("Register", "Register", "U2F")</li>
+                    </ul>
+                }
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
+    <br />
+    <br />
+    <br />
+    <div class="bg-danger" role="alert">
+        @Html.ValidationMessage("CustomError")
+    </div>
+    <br />
+    <div class="app_hide alert alert-danger" style="display: none;">
+        <p>This demo requires Chrome 44+!</p>
+        <div class="not_chrome" style="display: none;">
+            <p><strong>Your current browser is not yet supported.</strong></p>
+            <a class="btn" href="https://www.google.com/chrome/browser/">Get Chrome</a>
+        </div>
+        <div class="chrome" style="display: none;">
+            Update your chrome friend
+        </div>
+    </div>
+
+    @RenderSection("featured", required: false)
+    @RenderBody()
+</div>
+
+<br />
+
+<footer class="footer">
+    <div class="container">
+        <p class="text-muted">&copy; @DateTime.Now.Year - ASP.NET Core Application U2F.Core Demo</p>
+    </div>
+</footer>
+
+<environment names="Development">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</environment>
+<environment names="Staging,Production">
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+            asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+            asp-fallback-test="window.jQuery">
+    </script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+            asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+            asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
+    </script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+</environment>
+@RenderSection("scripts", required: false)
+<script type="text/javascript">
+    // TODO need to figure out this
+//    $(document).ready(function () {
+//        if (!bowser.chrome) {
+//            $(".app_hide").show();
+//            $('.not_chrome').show();
+//        }
+//
+//        if (window.u2f === undefined) {
+//            $(".app_hide").show();
+//            $(".chrome").show();
+//        }
+//    });
+</script>
+</body>
+</html>

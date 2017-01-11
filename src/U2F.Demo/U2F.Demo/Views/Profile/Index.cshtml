@@ -1,0 +1,190 @@
+﻿@model U2F.Demo.Models.User
+
+@{
+    ViewBag.Title = Model.Name + " - Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section featured
+{
+    <div class="panel panel-primary">
+        <div class="panel-heading">@Model.Name Profile</div>
+        <div class="panel-body">
+
+            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
+                <div class=".col-xs-6 .col-sm-4">
+                    @Html.Label("User name: " + Model.Name)
+                </div>
+            </div>
+            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
+                <div class=".col-xs-6 .col-sm-4">
+                    @Html.Label("email: " + Model.Email)
+                </div>
+            </div>
+
+            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
+                <div class=".col-xs-6 .col-sm-4">
+                    @Html.Label("Registered: " + Model.CreatedOn)
+                </div>
+            </div>
+
+            <div class=".col-xs-12 .col-sm-6 .col-lg-8">
+                <div class=".col-xs-6 .col-sm-4">
+                    @Html.Label("Last Updated: " + Model.UpdatedOn)
+                </div>
+            </div>
+
+            <button class="btn btn-success" data-toggle="modal" data-target="#promptModal" data-id="@Model.Id">
+                <i class="glyphicon glyphicon-plus-sign "></i> Add Device
+            </button>
+
+            <br />
+            <br />
+
+            @*device panel*@
+            <div class="panel panel-default">
+                <div class="panel-heading">Devices</div>
+                @*device table*@
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Counter</th>
+                            <th>Registered On</th>
+                            <th>Is Compromised</th>
+                            <th>Last Used</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var device in Model.DeviceRegistrations)
+                        {
+                            <tr>
+                                <th scope="row">@device.Id</th>
+                                <td>@device.Counter</td>
+                                <td>@device.CreatedOn</td>
+                                <td>@device.IsCompromised</td>
+                                <td>@device.UpdatedOn</td>
+                                <td>
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#detail-info" data-id="@device.Id">
+                                        <i class="glyphicon glyphicon-info-sign"></i> Info
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @*device panel*@
+    </div>
+
+    @**begin add modal*@
+    <div id="promptModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h3 id="myModalLabel">Performing U2F action</h3>
+                </div>
+                <div class="modal-body">
+                    <p>You may be prompted to allow the site permission to access your security keys. After granting permission, the device will start to blink.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Abort</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @**end device modal*@
+
+    @*begin info modal**@
+    <div class="modal fade" id="detail-info" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Detail Device Info</h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Counter</th>
+                                <th>Key Handle</th>
+                                <th>Public Key</th>
+                                <th>Last Used On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th id="deviceId" scope="row"></th>
+                                <td id="counter"></td>
+                                <td id="keyHandle"></td>
+                                <td id="publicKey"></td>
+                                <td id="lastUsed"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-ok" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @**end info modal*@
+}
+
+@section Scripts {
+    <!-- Dialog show event handler -->
+    <script type="text/javascript">
+        $('#detail-info').on('show.bs.modal', function(e) {
+            var deviceId = $(e.relatedTarget).data('id');
+
+            $.post("/Profile/DeviceInfo", { deviceId: deviceId })
+                .done(function (data) {
+                    var jsonobj = JSON.parse(data);
+                    $("#deviceId").text(jsonobj.Id);
+                    $("#counter").text(jsonobj.Counter);
+                    $("#keyHandle").text(jsonobj.KeyHandle);
+                    $("#publicKey").text(jsonobj.PublicKey);
+                    $("#lastUsed").text(jsonobj.UpdatedOn);
+                });
+        });
+
+        var errorMap = {
+            1: 'Unknown error, try again',
+            2: "Bad request error, try again",
+            3: "This key isn't supported, please try another one",
+            4: 'The device is already registered, please login',
+            5: 'Authentication timed out. Please reload to try again.'
+        };
+        $('#promptModal').on('show.bs.modal', function (e) {
+            $.post("/Profile/GetChallenge").
+                done(function (data) {
+                    var jsonobj = JSON.parse(data);
+                    window.u2f.register([
+                        {
+                            challenge: jsonobj.Challenge,
+                            version: jsonobj.Version,
+                            appId: jsonobj.AppId
+                        }
+                    ], [], function(data) {
+                        if (data.errorCode) {
+                            $('#promptModal').modal('hide');
+                            return alert(errorMap[data.errorCode]);
+                        }
+                        console.log("Register callback", data);
+                        $('#promptModal').modal('hide');
+                        $.post("/Profile/AddDevice", {deviceResponse: JSON.stringify(data) });
+
+                        return false;
+                    });
+                }).fail(function(error) {
+                    alert(error);
+                });
+        });
+    </script>
+}

@@ -1,0 +1,36 @@
+﻿@using System.Threading.Tasks
+@using U2F.Demo.ViewModel
+@model StartLoginViewModel
+
+@{
+    ViewBag.Title = "Login Page";
+}
+
+@section featured {
+
+    @using (Html.BeginForm("BeginLogin", "U2F"))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Login</legend>
+            <p>Enter a username and password.</p>
+
+            <div class="form-group">
+                <label asp-for="UserName"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input type="password" asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <br />
+            <input type="submit" value="Log in" />
+        </fieldset>
+    }
+}
+
+@section Scripts {
+}
