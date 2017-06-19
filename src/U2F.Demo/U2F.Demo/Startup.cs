@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,14 +19,14 @@ namespace U2F.Demo
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
-               // .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
+                // .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
 
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(true);
+                builder.AddUserSecrets<Startup>();
             }
+
             Configuration = builder.Build();
         }
         public IConfigurationRoot Configuration { get; }
@@ -35,9 +34,6 @@ namespace U2F.Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
-
             // TODO double check identity role is configured correctly
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<U2FContext>()
@@ -46,10 +42,10 @@ namespace U2F.Demo
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
+                options.Password.RequireUppercase = false;
                 options.Password.RequireLowercase = false;
 
                 // Lockout settings
@@ -64,8 +60,9 @@ namespace U2F.Demo
                 options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
                 options.Cookies.ApplicationCookie.AuthenticationScheme = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.AuthenticationScheme;
                 options.Cookies.ApplicationCookie.ReturnUrlParameter = Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationDefaults.ReturnUrlParameter;
+
                 // User settings
-                options.User.RequireUniqueEmail = false;                
+                options.User.RequireUniqueEmail = false;
             });
 
             services.AddMvc();
@@ -82,9 +79,7 @@ namespace U2F.Demo
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
-
-            if (env.IsDevelopment())
+            if(env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
@@ -95,8 +90,6 @@ namespace U2F.Demo
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseApplicationInsightsExceptionTelemetry();
-
             app.UseStaticFiles();
 
             app.UseIdentity();
@@ -106,7 +99,7 @@ namespace U2F.Demo
                 routes.MapRoute(
                     name: "default_route",
                     template: "{controller}/{action}/{id?}",
-                    defaults: new {controller = "U2F", action = "Index"});
+                    defaults: new { controller = "U2F", action = "Index" });
             });
         }
     }
