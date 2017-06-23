@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides FIDO U2F for .NET Core</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
-    <TargetFramework>netstandard1.6</TargetFramework>
+    <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
     <AssemblyName>U2F.Core</AssemblyName>
     <PackageId>U2F.Core</PackageId>
     <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
@@ -25,6 +25,9 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.1.2" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard1.6'">
     <PackageReference Include="System.Security.Cryptography.Cng" Version="4.3.0" />
   </ItemGroup>
 
