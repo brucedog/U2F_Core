@@ -1,22 +1,3 @@
-## .NET Universal 2nd Factor (U2F) 
-
-This repository provides functionality for working with the server side aspects of the U2F protocol on .NET core framework.  
-
-## Working Demo Site  
-TODO
-
-## NuGet page
-https://www.nuget.org/packages/U2F.Core
-
-## Original source JAVA library is located below
-https://github.com/Yubico/java-u2flib-server
-
-## Useful links
-- https://www.yubico.com/products/yubikey-hardware/fido-u2f-security-key/
-- https://developers.yubico.com/U2F/
-- https://fidoalliance.org/
-
-## License
 Copyright (c) 2016, Bryce Foster
 All rights reserved.
 
