@@ -81,9 +81,9 @@ namespace U2F.Core.Models
 
                 return rawRegisterResponse;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                throw new U2fException("Error when parsing attestation certificate", e);
+                throw new U2fException("Error when parsing attestation certificate", exception);
             }
             finally
             {
@@ -111,7 +111,6 @@ namespace U2F.Core.Models
             return new DeviceRegistration(
                 _keyHandle,
                 _userPublicKey,
-                // TODO investigate that this is correct
                 _attestationCertificate.GetEncoded(),
                 DeviceRegistration.InitialCounterValue);
         }

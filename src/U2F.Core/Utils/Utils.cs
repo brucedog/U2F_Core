@@ -9,7 +9,6 @@ namespace U2F.Core.Utils
         /// Converts byte array to a properly formatted base64 string
         /// </summary>
         /// <param name="input">The argument.</param>
-        /// <returns></returns>
         public static string ByteArrayToBase64String(this byte[] input)
         {
             string result = Convert.ToBase64String(input);
@@ -24,7 +23,6 @@ namespace U2F.Core.Utils
         /// Formats string to proper base64 string and returns it as a byte array.
         /// </summary>
         /// <param name="input">The input.</param>
-        /// <returns></returns>
         public static byte[] Base64StringToByteArray(this string input)
         {
             input = input.Replace('-', '+');
@@ -52,7 +50,7 @@ namespace U2F.Core.Utils
         /// <summary>
         /// Converts byte[] to UTF8 encoded string
         /// </summary>
-        /// <param name="bytes"></param>
+        /// <param name="bytes">Byte array to be converted to UTF8 string.</param>
         /// <returns>UTF8 encoded string</returns>
         public static string GetString(this byte[] bytes)
         {
