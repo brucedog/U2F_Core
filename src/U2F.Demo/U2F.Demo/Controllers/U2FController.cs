@@ -66,6 +66,7 @@ namespace U2F.Demo.Controllers
 
             try
             {
+                ServerRegisterResponse baseServerChallenge = await _membershipService.GenerateServerChallenge(model.UserName);
                 List<ServerChallenge> serverChallenge = await _membershipService.GenerateServerChallenges(model.UserName);
 
                 if (serverChallenge == null || serverChallenge.Count == 0)
@@ -74,10 +75,11 @@ namespace U2F.Demo.Controllers
                 var challenges = JsonConvert.SerializeObject(serverChallenge);
                 CompleteLoginViewModel loginModel = new CompleteLoginViewModel
                 {
-                    AppId = serverChallenge.First().appId,
-                    Version = serverChallenge.First().version,
-                    UserName = model.UserName.Trim(),
-                    Challenges = challenges
+                    AppId = baseServerChallenge.AppId,
+                    Version = baseServerChallenge.Version,
+                    Challenge = baseServerChallenge.Challenge,
+                    Challenges = challenges,
+                    UserName = model.UserName.Trim()
                 };
                 return View("FinishLogin", loginModel);
             }
