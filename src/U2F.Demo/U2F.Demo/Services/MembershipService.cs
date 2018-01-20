@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +14,8 @@ namespace U2F.Demo.Services
 {
     public class MembershipService : IMembershipService
     {
-        // NOTE: THIS HAS TO BE UPDATED TO MATCH YOUR SITE/EXAMPLE and sites must be https for chrome plugin
+        // NOTE: THIS HAS TO BE UPDATED TO MATCH YOUR SITE/EXAMPLE and sites must be https
         private const string DemoAppId = "https://localhost:44340";
-        private readonly SHA256 _sha256 = SHA256.Create();
         private readonly U2FContext _dataContext;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -182,15 +180,15 @@ namespace U2F.Demo.Services
                 return null;
 
             // We only want to generate challenges for un-compromised devices
-            List<Device> device = user.DeviceRegistrations.Where(w => w.IsCompromised == false).ToList();
+            List<Device> devices = user.DeviceRegistrations.Where(w => w.IsCompromised == false).ToList();
 
-            if (device.Count == 0)
+            if (devices.Count == 0)
                 return null;
 
             user.AuthenticationRequest.Clear();
 
             List<ServerChallenge> serverChallenges = new List<ServerChallenge>();
-            foreach (var registeredDevice in device)
+            foreach (Device registeredDevice in devices)
             {
                 DeviceRegistration registration = new DeviceRegistration(registeredDevice.KeyHandle, registeredDevice.PublicKey, registeredDevice.AttestationCert, Convert.ToUInt32(registeredDevice.Counter));
                 StartedAuthentication startedAuthentication = Core.Crypto.U2F.StartAuthentication(DemoAppId, registration);
