@@ -71,24 +71,28 @@
             5: 'Authentication timed out. Please reload to try again.'
         };
 
-        setTimeout(function () {
-            $('#promptModal').modal('show');
-            window.u2f.register([{
-                challenge: "@Model.Challenge",
-                version: "@Model.Version",
-                appId: "@Model.AppId"
-            }],[], function (data) {
-                    if (data.errorCode) {
+        setTimeout(function() {
+                $('#promptModal').modal('show');
+                window.u2f.register(
+                    "@Model.AppId",[{
+                        challenge: "@Model.Challenge",
+                        version: "@Model.Version",
+                        appId: "@Model.AppId"
+                    }],
+                    [{}],
+                    function(data) {
+                        if (data.errorCode) {
+                            $('#promptModal').modal('hide');
+                            return alert(errorMap[data.errorCode]);
+                        }
+                        console.log("Register callback", data);
                         $('#promptModal').modal('hide');
-                        return alert(errorMap[data.errorCode]);
-                    }
-                console.log("Register callback", data);
-                $('#promptModal').modal('hide');
-                $('#DeviceResponse').val(JSON.stringify(data));
-                $('#registerForm').submit();
+                        $('#DeviceResponse').val(JSON.stringify(data));
+                        $('#registerForm').submit();
 
-                return false;
-            });
-        }, 1000);
+                        return false;
+                    });
+            },
+            1000);
     </script>
 }
