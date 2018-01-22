@@ -71,7 +71,9 @@
 
         setTimeout(function() {
             window.u2f.sign(
-                @Html.Raw(Model.Challenges), function (data) {
+                "@Model.AppId",
+                "@Model.Challenge",
+                @Html.Raw(@Model.Challenges), function (data) {
                 console.log("call back data: ", data);
 
                 if (data.errorCode) {

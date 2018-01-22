@@ -22,5 +22,8 @@ namespace U2F.Demo.ViewModel
 
         [Display(Name = "Challenges")]
         public string Challenges { get; set; }
+
+        [Display(Name = "Challenge")]
+        public string Challenge { get; set; }
     }
 }

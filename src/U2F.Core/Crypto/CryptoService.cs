@@ -13,7 +13,7 @@ using ECPoint = Org.BouncyCastle.Math.EC.ECPoint;
 
 namespace U2F.Core.Crypto
 {
-    public sealed class CryptoService : IDisposable, ICrytoService
+    public sealed class CryptoService : IDisposable, ICryptoService
     {
         private readonly DerObjectIdentifier _curve = SecObjectIdentifiers.SecP256r1;
         private SHA256 _sha256 = SHA256.Create();
@@ -91,9 +91,9 @@ namespace U2F.Core.Crypto
             }
         }
 
-        public byte[] Hash(string str)
+        public byte[] Hash(string stringToHash)
         {
-            return Hash(str.GetBytes());
+            return Hash(stringToHash.GetBytes());
         }
 
         public byte[] Hash(byte[] bytes)
