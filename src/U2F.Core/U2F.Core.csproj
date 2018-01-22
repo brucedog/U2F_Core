@@ -10,15 +10,15 @@
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <RepositoryUrl>https://github.com/brucedog/U2F_Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>U2F .NET Core FIDO</PackageTags>
-    <PackageReleaseNotes>Updated for support of .NET 4.5 and 4.6.2</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated for support of netstandard 2.0.</PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
     <Copyright>2016</Copyright>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
