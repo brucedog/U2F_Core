@@ -94,7 +94,7 @@ namespace U2F.Demo.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CompletedLogin(CompleteLoginViewModel model)
+        public async Task<ActionResult> CompletedLogin([FromForm]CompleteLoginViewModel model)
         {
             bool isUserRegistered = await _membershipService.IsUserRegistered(model.UserName);
             if (!isUserRegistered)
