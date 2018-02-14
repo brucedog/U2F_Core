@@ -163,23 +163,21 @@
         };
         $('#promptModal').on('show.bs.modal', function (e) {
             $.post("/Profile/GetChallenge").
-                done(function (data) {
+                done(function (data) {                    
                     var jsonobj = JSON.parse(data);
-                    window.u2f.register([
-                        {
-                            challenge: jsonobj.Challenge,
-                            version: jsonobj.Version,
-                            appId: jsonobj.AppId
-                        }
-                    ], [], function(data) {
+                    console.log(jsonobj);
+                    var registerRequests = [{ version: jsonobj.Version, challenge: jsonobj.Challenge}];
+                    window.u2f.register(jsonobj.AppId, registerRequests, [], function(data) {
                         if (data.errorCode) {
                             $('#promptModal').modal('hide');
                             return alert(errorMap[data.errorCode]);
                         }
                         console.log("Register callback", data);
                         $('#promptModal').modal('hide');
-                        $.post("/Profile/AddDevice", {deviceResponse: JSON.stringify(data) });
-
+                        $.post("/Profile/AddDevice", { deviceResponse: JSON.stringify(data) }).done(
+                            function() {
+                                location.reload(true);
+                            });                        
                         return false;
                     });
                 }).fail(function(error) {
