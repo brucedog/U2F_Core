@@ -9,15 +9,16 @@ namespace U2F.Core.Exceptions
             Console.WriteLine("U2f exception:{0}", message);
         }
 
-        public U2fException(string errorWhenVerifyingSignature, InvalidKeySpecException invalidKeyException)
+        public U2fException(string message, InvalidKeySpecException invalidKeyException)
+            : base(message, invalidKeyException?.InnerException)
         {
-            Console.WriteLine("Error verifying signature:{0} invalid key exception:{1}", errorWhenVerifyingSignature, invalidKeyException);
+            Console.WriteLine("Error verifying signature:{0} invalid key exception:{1}", message, invalidKeyException);
         }
 
-        public U2fException(string couldNotParseUserPublicKey, Exception invalidKeyException)
+        public U2fException(string message, Exception invalidKeyException)
+        : base(message, invalidKeyException?.InnerException)
         {
-            Console.WriteLine("Could not parse:{0} invalid key exception:{1}", couldNotParseUserPublicKey,
-                              invalidKeyException);
+            Console.WriteLine("Could not parse:{0} invalid key exception:{1}", message, invalidKeyException);
         }
     }
 }
