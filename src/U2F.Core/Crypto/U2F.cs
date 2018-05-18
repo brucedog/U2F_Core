@@ -98,5 +98,17 @@ namespace U2F.Core.Crypto
         
             return deviceRegistration.CheckAndUpdateCounter(authenticateResponse.Counter);
         }
+
+        /// <summary>
+        /// Generates a base 64 encode string 
+        /// </summary>
+        /// <returns>base 64 encode string</returns>
+        public static string GenerateChallenge()
+        {
+            byte[] challenge = Crypto.GenerateChallenge();
+            string challengeBase64 = challenge.ByteArrayToBase64String();
+
+            return challengeBase64;
+        }
     }
 }
