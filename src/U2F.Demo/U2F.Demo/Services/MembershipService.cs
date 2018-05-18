@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using U2F.Core.Models;
 using U2F.Demo.DataStore;
 using U2F.Demo.Models;
@@ -150,6 +152,7 @@ namespace U2F.Demo.Services
             StartedAuthentication authentication = new StartedAuthentication(authenticationRequest.Challenge, authenticationRequest.AppId, authenticationRequest.KeyHandle);
 
             Core.Crypto.U2F.FinishAuthentication(authentication, authenticateResponse, registration);
+            await _signInManager.SignInAsync(user, new AuthenticationProperties(), "U2F");
 
             user.AuthenticationRequest.Clear();
             user.UpdatedOn = DateTime.Now;
@@ -172,7 +175,7 @@ namespace U2F.Demo.Services
             return user != null;
         }
 
-        public async Task<List<ServerChallenge>> GenerateServerChallenges(string userName)
+        public async Task<List<ServerChallenge>> GenerateDeviceChallenges(string userName)
         {
             User user = await FindUserByUsername(userName);
 
@@ -186,27 +189,25 @@ namespace U2F.Demo.Services
                 return null;
 
             user.AuthenticationRequest.Clear();
+            string challenge = Core.Crypto.U2F.GenerateChallenge();
 
             List<ServerChallenge> serverChallenges = new List<ServerChallenge>();
             foreach (Device registeredDevice in devices)
             {
-                DeviceRegistration registration = new DeviceRegistration(registeredDevice.KeyHandle, registeredDevice.PublicKey, registeredDevice.AttestationCert, Convert.ToUInt32(registeredDevice.Counter));
-                StartedAuthentication startedAuthentication = Core.Crypto.U2F.StartAuthentication(DemoAppId, registration);
-
                 serverChallenges.Add(new ServerChallenge
                 {
-                    appId = startedAuthentication.AppId,
-                    challenge = startedAuthentication.Challenge,
-                    keyHandle = startedAuthentication.KeyHandle,
-                    version = startedAuthentication.Version
+                    appId = DemoAppId,
+                    challenge = challenge,
+                    keyHandle = registeredDevice.KeyHandle.ByteArrayToBase64String(),
+                    version = Core.Crypto.U2F.U2FVersion
                 });
                 user.AuthenticationRequest.Add(
                 new AuthenticationRequest
                 {
-                    AppId = startedAuthentication.AppId,
-                    Challenge = startedAuthentication.Challenge,
-                    KeyHandle = startedAuthentication.KeyHandle,
-                    Version = startedAuthentication.Version
+                    AppId = DemoAppId,
+                    Challenge = challenge,
+                    KeyHandle = registeredDevice.KeyHandle.ByteArrayToBase64String(),
+                    Version = Core.Crypto.U2F.U2FVersion
                 });
             }
             user.UpdatedOn = DateTime.Now;
@@ -218,8 +219,10 @@ namespace U2F.Demo.Services
         {
             if (string.IsNullOrWhiteSpace(userName) || string.IsNullOrWhiteSpace(password))
                 return false;
-            
-            SignInResult result = await _signInManager.PasswordSignInAsync(userName.Trim(), password.Trim(), false, false);
+
+            User user = await FindUserByUsername(userName.Trim());
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password.Trim(), false);
+
             return result.Succeeded;                
         }
 

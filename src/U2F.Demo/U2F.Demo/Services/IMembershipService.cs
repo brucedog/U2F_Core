@@ -26,7 +26,7 @@ namespace U2F.Demo.Services
         /// </summary>
         /// <param name="username">username to generate challenges for.</param>
         /// <returns>list of challenges for each device the user has registered.</returns>
-        Task<List<ServerChallenge>> GenerateServerChallenges(string username);
+        Task<List<ServerChallenge>> GenerateDeviceChallenges(string username);
 
         Task<ServerRegisterResponse> GenerateServerChallenge(string username);
 

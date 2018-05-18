@@ -66,18 +66,17 @@ namespace U2F.Demo.Controllers
 
             try
             {
-                ServerRegisterResponse baseServerChallenge = await _membershipService.GenerateServerChallenge(model.UserName);
-                List<ServerChallenge> serverChallenge = await _membershipService.GenerateServerChallenges(model.UserName);
+                List<ServerChallenge> deviceChallenges = await _membershipService.GenerateDeviceChallenges(model.UserName);
 
-                if (serverChallenge == null || serverChallenge.Count == 0)
+                if (deviceChallenges == null || deviceChallenges.Count == 0)
                     throw new Exception("No server challenges were generated.");
 
-                var challenges = JsonConvert.SerializeObject(serverChallenge);
+                var challenges = JsonConvert.SerializeObject(deviceChallenges);
                 CompleteLoginViewModel loginModel = new CompleteLoginViewModel
                 {
-                    AppId = baseServerChallenge.AppId,
-                    Version = baseServerChallenge.Version,
-                    Challenge = baseServerChallenge.Challenge,
+                    AppId = deviceChallenges[0].appId,
+                    Version = deviceChallenges[0].version,
+                    Challenge = deviceChallenges[0].challenge,
                     Challenges = challenges,
                     UserName = model.UserName.Trim()
                 };

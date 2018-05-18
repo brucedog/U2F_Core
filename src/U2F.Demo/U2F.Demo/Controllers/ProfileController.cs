@@ -63,7 +63,7 @@ namespace U2F.Demo.Controllers
         {
             try
             {
-                List<ServerChallenge> serverRegisterResponse = await _membershipService.GenerateServerChallenges(HttpContext.User.Identity.Name);
+                List<ServerChallenge> serverRegisterResponse = await _membershipService.GenerateDeviceChallenges(HttpContext.User.Identity.Name);
                 CompleteRegisterViewModel registerModel = new CompleteRegisterViewModel
                 {
                     UserName = HttpContext.User.Identity.Name,

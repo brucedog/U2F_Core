@@ -14,7 +14,6 @@ namespace U2F.Demo.DataStore
            : base(options)
         {
             _logger = logger;
-            Database.Migrate();
         }
 
         public override int SaveChanges()

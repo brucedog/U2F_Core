@@ -36,7 +36,7 @@ namespace U2F.Demo
                 options.ExpireTimeSpan = TimeSpan.FromDays(150);
                 options.LoginPath = "/U2F/Login";
                 options.LogoutPath = "/U2F/LogOff";
-                options.Cookie.Domain = "U2FDemo";                
+                options.AccessDeniedPath = "/U2F";
                 //options.Cookies.ApplicationCookie.AutomaticAuthenticate = true;
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
             });
@@ -61,8 +61,7 @@ namespace U2F.Demo
             services.AddMvc();
 
             var connectionString = Configuration["connectionStrings:DBConnectionString"];
-            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));
-
+            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));            
             services.AddScoped<IMembershipService, MembershipService>();
         }
 
@@ -94,6 +93,19 @@ namespace U2F.Demo
                     template: "{controller}/{action}/{id?}",
                     defaults: new { controller = "U2F", action = "Index" });
             });
-        }
-    }
+
+            try
+            {
+                using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
+                    .CreateScope())
+                {
+
+                    serviceScope.ServiceProvider.GetService<U2FContext>().Database.Migrate();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }        }
 }

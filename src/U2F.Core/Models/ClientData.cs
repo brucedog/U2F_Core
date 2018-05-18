@@ -27,7 +27,7 @@ namespace U2F.Core.Models
             try
             {
                 if(string.IsNullOrWhiteSpace(clientData))
-                    throw  new ArgumentException("Invalid argument passed.");
+                    throw  new ArgumentException(Resources.InvalidArguments);
 
                 RawClientData = clientData.Base64StringToByteArray().GetString();
 
@@ -94,7 +94,7 @@ namespace U2F.Core.Models
         private string CanonicalizeOrigin(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
-                throw new ArgumentException("Invalid argument(s) were being passed.");
+                throw new ArgumentException(Resources.InvalidArguments);
             try
             {
                 Uri uri = new Uri(url);
