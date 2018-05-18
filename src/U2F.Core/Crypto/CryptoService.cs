@@ -18,9 +18,7 @@ namespace U2F.Core.Crypto
         private readonly DerObjectIdentifier _curve = SecObjectIdentifiers.SecP256r1;
         private SHA256 _sha256 = SHA256.Create();
         private RandomNumberGenerator _randomNumberGenerator;
-        private const string SignatureError = "Error when verifying signature";
         private const string ErrorDecodingPublicKey = "Error when decoding public key";
-        private const string InvalidArgumentException = "The arguments passed the were not valid";
         private const string Sha256Exception = "Error when computing SHA-256";
 
         public CryptoService()
@@ -56,7 +54,7 @@ namespace U2F.Core.Crypto
             }
             catch (InvalidKeySpecException exception)
             {
-                throw new U2fException(SignatureError, exception);
+                throw new U2fException(Resources.SignatureError, exception);
             }
             catch (Exception exception)
             {
@@ -68,26 +66,30 @@ namespace U2F.Core.Crypto
         {
             try
             {
-                if (certificate == null || signedbytes== null || signedbytes.Length == 0 
+                if (certificate == null || signedbytes == null || signedbytes.Length == 0
                     || signature == null || signature.Length == 0)
-                    throw new ArgumentException(InvalidArgumentException);
+                    throw new ArgumentException(Resources.InvalidArguments);
 
                 ISigner signer = SignerUtilities.GetSigner("SHA-256withECDSA");
                 signer.Init(false, certificate);
                 signer.BlockUpdate(signedbytes, 0, signedbytes.Length);
 
                 if (!signer.VerifySignature(signature))
-                    throw new U2fException(SignatureError);
+                    throw new U2fException(Resources.SignatureError);
 
                 return true;
             }
+            catch (ArgumentException e)
+            {
+                throw e;
+            }
             catch (InvalidKeySpecException e)
             {
-                throw new U2fException(SignatureError, e);
+                throw new U2fException(Resources.SignatureError, e);
             }
             catch (Exception e)
             {
-                throw new U2fException(SignatureError, e);
+                throw new U2fException(Resources.SignatureError, e);
             }
         }
 
