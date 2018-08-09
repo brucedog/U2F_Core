@@ -3,7 +3,7 @@
 This repository provides functionality for working with the server side aspects of the U2F protocol on .NET core framework.  
 
 ## Working Demo Site  
-https://bfoster.me
+https://bfoster.me/U2FDemo/DemoHome
 
 ## NuGet page
 https://www.nuget.org/packages/U2F.Core
