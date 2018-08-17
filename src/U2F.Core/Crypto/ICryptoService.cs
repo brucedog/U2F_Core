@@ -1,5 +1,5 @@
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.X509;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 
 namespace U2F.Core.Crypto
 {
@@ -10,31 +10,39 @@ namespace U2F.Core.Crypto
         /// </summary>
         /// <returns>Securely generated random bytes</returns>
         byte[] GenerateChallenge();
+        
+        /// <summary>
+        /// Checks the signature.
+        /// </summary>
+        /// <param name="certificate">The key.</param>
+        /// <param name="signedBytes">The source.</param>
+        /// <param name="signature">The signature.</param>
+        /// <returns></returns>
+        bool CheckSignature(X509Certificate2 certificate, byte[] signedBytes, byte[] signature);
+
 
         /// <summary>
         /// Checks the signature.
         /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="src">The source.</param>
+        /// <param name="certificate">The key.</param>
+        /// <param name="signedBytes">The source.</param>
         /// <param name="signature">The signature.</param>
         /// <returns></returns>
-         bool CheckSignature(ICipherParameters key, byte[] src, byte[] signature);
-
-        /// <summary>
-        /// Checks the signature.
-        /// </summary>
-        /// <param name="attestationCertificate">The attestation certificate.</param>
-        /// <param name="signedBytes">The signed bytes.</param>
-        /// <param name="signature">The signature.</param>
-        /// <returns></returns>
-        bool CheckSignature(X509Certificate attestationCertificate, byte[] signedBytes, byte[] signature);
+        bool CheckSignature(CngKey certificate, byte[] signedBytes, byte[] signature);
 
         /// <summary>
         /// Decodes the public key.
         /// </summary>
         /// <param name="encodedPublicKey">The encoded public key.</param>
         /// <returns></returns>
-        ICipherParameters DecodePublicKey(byte[] encodedPublicKey);
+        CngKey DecodePublicKey(X509Certificate2 encodedPublicKey);
+
+        /// <summary>
+        /// Encoding the raw byte[] key to Cngkey.
+        /// </summary>
+        /// <param name="rawKey">Raw byte[] should be 65 bytes in length.</param>
+        /// <returns></returns>
+        CngKey EncodePublicKey(byte[] rawKey);
 
         /// <summary>
         /// Hashes the specified bytes.
