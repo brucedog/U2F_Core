@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Security.Cryptography;
-using Org.BouncyCastle.Asn1;
-using Org.BouncyCastle.Asn1.Sec;
-using Org.BouncyCastle.Asn1.X9;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Parameters;
-using Org.BouncyCastle.Security;
-using Org.BouncyCastle.X509;
+using System.Security.Cryptography.X509Certificates;
 using U2F.Core.Exceptions;
 using U2F.Core.Utils;
-using ECPoint = Org.BouncyCastle.Math.EC.ECPoint;
 
 namespace U2F.Core.Crypto
 {
     public sealed class CryptoService : IDisposable, ICryptoService
     {
-        private readonly DerObjectIdentifier _curve = SecObjectIdentifiers.SecP256r1;
+        //private readonly ECCurve _elipiticCurve = ECCurve.CreateFromFriendlyName("secP256r1");
         private SHA256 _sha256 = SHA256.Create();
         private RandomNumberGenerator _randomNumberGenerator;
+        private const string SignatureError = "Error when verifying signature";
         private const string ErrorDecodingPublicKey = "Error when decoding public key";
+        private const string InvalidArgumentException = "The arguments passed the were not valid";
         private const string Sha256Exception = "Error when computing SHA-256";
 
         public CryptoService()
@@ -29,28 +24,25 @@ namespace U2F.Core.Crypto
             _randomNumberGenerator = RandomNumberGenerator.Create();
         }
 
-        public byte[] GenerateChallenge()
-        {
-            byte[] randomBytes = new byte[32];
-            _randomNumberGenerator.GetBytes(randomBytes);
-
-            return randomBytes;
-        }
-
-        public bool CheckSignature(X509Certificate attestationCertificate, byte[] signedBytes, byte[] signature)
-        {
-            return CheckSignature(attestationCertificate.GetPublicKey(), signedBytes, signature);
-        }
-
-        public ICipherParameters DecodePublicKey(byte[] encodedPublicKey)
+        public CngKey EncodePublicKey(byte[] rawKey)
         {
             try
             {
-                X9ECParameters curve = SecNamedCurves.GetByOid(_curve);
-                ECPoint point = curve.Curve.DecodePoint(encodedPublicKey);
-                ECDomainParameters ecP = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);
+                return ConvertPublicKey(rawKey);
+            }
+            catch (Exception exception)
+            {
+                throw new U2fException(ErrorDecodingPublicKey, exception);
+            }
+        }
 
-                return new ECPublicKeyParameters(point, ecP);
+        public CngKey DecodePublicKey(X509Certificate2 certificate)
+        {
+            try
+            {
+                byte[] rawData = certificate.PublicKey.EncodedKeyValue.RawData;
+
+                return ConvertPublicKey(rawData);
             }
             catch (InvalidKeySpecException exception)
             {
@@ -61,36 +53,67 @@ namespace U2F.Core.Crypto
                 throw new U2fException(ErrorDecodingPublicKey, exception);
             }
         }
-        
-        public bool CheckSignature(ICipherParameters certificate, byte[] signedbytes, byte[] signature)
+
+        public bool CheckSignature(CngKey certificate, byte[] signedBytes, byte[] signature)
         {
             try
             {
-                if (certificate == null || signedbytes == null || signedbytes.Length == 0
+                if (certificate == null
+                    || signedBytes == null || signedBytes.Length == 0
                     || signature == null || signature.Length == 0)
-                    throw new ArgumentException(Resources.InvalidArguments);
+                    throw new ArgumentException(InvalidArgumentException);
 
-                ISigner signer = SignerUtilities.GetSigner("SHA-256withECDSA");
-                signer.Init(false, certificate);
-                signer.BlockUpdate(signedbytes, 0, signedbytes.Length);
+                bool result = VerifySignedBytesAgainstSignature(certificate, signedBytes, signature);
 
-                if (!signer.VerifySignature(signature))
-                    throw new U2fException(Resources.SignatureError);
+                if(!result)
+                    throw new U2fException(SignatureError);
 
                 return true;
             }
-            catch (ArgumentException e)
+            catch (InvalidKeySpecException exception)
             {
-                throw e;
+                throw new U2fException(SignatureError, exception);
             }
-            catch (InvalidKeySpecException e)
+            catch (Exception exception)
             {
-                throw new U2fException(Resources.SignatureError, e);
+                throw new U2fException(SignatureError, exception);
             }
-            catch (Exception e)
+        }
+
+        public bool CheckSignature(X509Certificate2 attestationCertificate, byte[] signedBytes, byte[] signature)
+        {
+            try
             {
-                throw new U2fException(Resources.SignatureError, e);
+                if (attestationCertificate == null
+                    || signedBytes == null || signedBytes.Length == 0
+                    || signature == null || signature.Length == 0)
+                    throw new ArgumentException(InvalidArgumentException);
+
+                CngKey publicKey = DecodePublicKey(attestationCertificate);
+
+                bool result = VerifySignedBytesAgainstSignature(publicKey, signedBytes, signature);
+
+                if (!result)
+                    throw new U2fException(SignatureError);
+
+                return true;
             }
+            catch (InvalidKeySpecException exception)
+            {
+                throw new U2fException(SignatureError, exception);
+            }
+            catch (Exception exception)
+            {
+                throw new U2fException(SignatureError, exception);
+            }
+        }
+
+        public byte[] GenerateChallenge()
+        {
+            byte[] randomBytes = new byte[32];
+            _randomNumberGenerator.GetBytes(randomBytes);
+
+            return randomBytes;
         }
 
         public byte[] Hash(string stringToHash)
@@ -110,6 +133,32 @@ namespace U2F.Core.Crypto
             {
                 throw new UnsupportedOperationException(Sha256Exception, exception);
             }
+        }
+
+        private bool VerifySignedBytesAgainstSignature(CngKey publicKey, byte[] signedBytes, byte[] signature)
+        {
+            using (ECDsaCng verifier = new ECDsaCng(publicKey))
+            {
+                verifier.HashAlgorithm = CngAlgorithm.Sha256;
+                bool result = verifier.VerifyData(signedBytes, signature.FromAsn1Signature());
+                return result;
+            }
+        }
+
+        private CngKey ConvertPublicKey(byte[] rawData)
+        {
+            if (rawData == null || rawData.Length == 0 || rawData.Length != 65)
+                throw new ArgumentException(InvalidArgumentException);
+
+            var header = new byte[] { 0x45, 0x43, 0x53, 0x31, 0x20, 0x00, 0x00, 0x00 };
+            var eccPublicKeyBlob = new byte[72];
+
+            Array.Copy(header, 0, eccPublicKeyBlob, 0, 8);
+            Array.Copy(rawData, 1, eccPublicKeyBlob, 8, 64);
+
+            CngKey key = CngKey.Import(eccPublicKeyBlob, CngKeyBlobFormat.EccPublicBlob);
+
+            return key;
         }
 
         public void Dispose()

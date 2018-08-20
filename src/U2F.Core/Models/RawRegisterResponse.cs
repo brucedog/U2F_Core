@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Org.BouncyCastle.X509;
+using System.Security.Cryptography.X509Certificates;
 using U2F.Core.Exceptions;
 using U2F.Core.Utils;
 
@@ -19,7 +19,7 @@ namespace U2F.Core.Models
         // A handle that allows the U2F token to identify the generated key pair.
         private readonly byte[] _keyHandle;
 
-        private readonly X509Certificate _attestationCertificate;
+        private readonly X509Certificate2 _attestationCertificate;
 
         // A ECDSA signature (on P-256) 
         private readonly byte[] _signature;
@@ -32,7 +32,7 @@ namespace U2F.Core.Models
         /// <param name="attestationCertificate">The attestation certificate.</param>
         /// <param name="signature">The signature.</param>
         public RawRegisterResponse(byte[] userPublicKey, byte[] keyHandle,
-                                   X509Certificate attestationCertificate, byte[] signature)
+                                   X509Certificate2 attestationCertificate, byte[] signature)
         {
             _userPublicKey = userPublicKey;
             _keyHandle = keyHandle;
@@ -60,18 +60,27 @@ namespace U2F.Core.Models
                 byte reservedByte = binaryReader.ReadByte();
                 if (reservedByte != RegistrationReservedByteValue)
                 {
-                    throw new U2fException(string.Format("Incorrect value of reserved byte. Expected: {0}. Was: {1}",
-                        RegistrationReservedByteValue, reservedByte));
+                    throw new U2fException($"Incorrect value of reserved byte. Expected: {RegistrationReservedByteValue}. Was: {reservedByte}");
                 }
 
                 byte[] publicKey = binaryReader.ReadBytes(65);
-                byte[] keyHandle = binaryReader.ReadBytes(binaryReader.ReadByte());
-                X509CertificateParser x509CertificateParser = new X509CertificateParser();
-                X509Certificate attestationCertificate = x509CertificateParser.ReadCertificate(stream);
-                int size = (int)(binaryReader.BaseStream.Length - binaryReader.BaseStream.Position);
-                
+                byte keyHandleLength = binaryReader.ReadByte();
+                byte[] keyHandle = binaryReader.ReadBytes(keyHandleLength);
 
-                byte[] signature = binaryReader.ReadBytes(size);
+                List<byte> rawCertBytes = new List<byte>();
+                while (binaryReader.BaseStream.Length - binaryReader.BaseStream.Position > 0)
+                {
+                    byte end = binaryReader.ReadByte();
+
+                    rawCertBytes.Add(end);
+                }
+
+                X509Certificate2 attestationCertificate = new X509Certificate2(rawCertBytes.ToArray());
+
+                // reserved byte + public key length + key handle length + cert data length 
+                int size = 1 + 65 + 1 + keyHandle.Length + attestationCertificate.RawData.Length;
+
+                byte[] signature = bytes.Skip(size).Take(bytes.Length - size).ToArray();
 
                 RawRegisterResponse rawRegisterResponse = new RawRegisterResponse(
                     publicKey,
@@ -111,7 +120,7 @@ namespace U2F.Core.Models
             return new DeviceRegistration(
                 _keyHandle,
                 _userPublicKey,
-                _attestationCertificate.GetEncoded(),
+                _attestationCertificate.RawData,
                 DeviceRegistration.InitialCounterValue);
         }
 

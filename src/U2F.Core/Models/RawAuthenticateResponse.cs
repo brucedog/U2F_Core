@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using U2F.Core.Exceptions;
 using U2F.Core.Utils;
 
@@ -109,7 +110,7 @@ namespace U2F.Core.Models
                 Crypto.U2F.Crypto.Hash(clientData));
 
             Crypto.U2F.Crypto.CheckSignature(
-                Crypto.U2F.Crypto.DecodePublicKey(publicKey),
+                Crypto.U2F.Crypto.EncodePublicKey(publicKey),
                 signedBytes,
                 Signature);
         }
