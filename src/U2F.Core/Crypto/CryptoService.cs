@@ -63,7 +63,12 @@ namespace U2F.Core.Crypto
                     || signature == null || signature.Length == 0)
                     throw new ArgumentException(InvalidArgumentException);
 
-                return VerifySignedBytesAgainstSignature(certificate, signedBytes, signature);
+                bool result = VerifySignedBytesAgainstSignature(certificate, signedBytes, signature);
+
+                if(!result)
+                    throw new U2fException(SignatureError);
+
+                return true;
             }
             catch (InvalidKeySpecException exception)
             {
@@ -86,7 +91,12 @@ namespace U2F.Core.Crypto
 
                 CngKey publicKey = DecodePublicKey(attestationCertificate);
 
-                return VerifySignedBytesAgainstSignature(publicKey, signedBytes, signature);
+                bool result = VerifySignedBytesAgainstSignature(publicKey, signedBytes, signature);
+
+                if (!result)
+                    throw new U2fException(SignatureError);
+
+                return true;
             }
             catch (InvalidKeySpecException exception)
             {
