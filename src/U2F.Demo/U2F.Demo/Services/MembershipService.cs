@@ -126,6 +126,9 @@ namespace U2F.Demo.Services
             });
             int result = await _dataContext.SaveChangesAsync();
 
+            if(result > 0)
+                await _signInManager.SignInAsync(user, new AuthenticationProperties(), "U2F");
+
             return result > 0;
         }
 

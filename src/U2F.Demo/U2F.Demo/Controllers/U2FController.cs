@@ -185,8 +185,8 @@ namespace U2F.Demo.Controllers
                     value.DeviceResponse = await _membershipService.CompleteRegistration(value.UserName, value.DeviceResponse)
                         ? "Registration was successful."
                         : "Registration failed.";
-
-                    return View("SucessfulRegister", new CompleteRegisterViewModel { UserName = value.UserName, DeviceResponse = value.DeviceResponse });
+                    
+                    return RedirectToAction("Index", "Profile");
                 }
                 catch (Exception e)
                 {
