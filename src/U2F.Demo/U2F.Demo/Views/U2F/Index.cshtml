@@ -13,8 +13,8 @@
                 <a href="https://www.yubico.com/products/yubikey-hardware/fido-u2f-security-key/" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a>
             </p>
             <p>
-                @Html.ActionLink("Login", "Login", "U2F", new { @class = "btn btn-lg btn-success" })
-                @Html.ActionLink("Register", "Register", "U2F", new { @class = "btn btn-lg btn-success" })
+                @Html.ActionLink("Login", "Login", "U2F", new { id = "login" }, new { @class = "btn btn-lg btn-success" })
+                @Html.ActionLink("Register", "Register", "U2F", new { id = "register" }, new { @class = "btn btn-lg btn-success" })
             </p>
         </div>
     </div>

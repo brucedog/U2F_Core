@@ -13,7 +13,7 @@
         <script src="@Url.Content("~/js/u2f-api-1.1.js")"></script>
     </environment>
     <environment names="Staging,Production">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/css/bootstrap.min.css"
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
@@ -24,41 +24,36 @@
 <body>
 
 <!-- Fixed navbar -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">ASP.NET Core U2F.Core DEMO</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    using (Html.BeginForm("LogOff", "U2F", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                    {
-                        @Html.AntiForgeryToken()
-
-                        <ul class="nav navbar-nav navbar-right">
-                            <li>
-                                @Html.ActionLink("Hello " + User.Identity.Name + " !", "Index", "Profile", routeValues: null, htmlAttributes: new { title = "Manage" })
-                            </li>
-                            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-                        </ul>
-                    }
-                }
-                else
-                {
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("Login", "Login", "U2F")</li>
-                        <li>@Html.ActionLink("Register", "Register", "U2F")</li>
-                    </ul>
-                }
-        </div><!--/.nav-collapse -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" role="navigation">
+    <div class="d-flex flex-grow-1 w-100 order-0">
+        <a class="navbar-brand" href="/">ASP.NET Core U2F.Core DEMO</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
     </div>
+    <div class="navbar-collapse collapse order-1 dual-collapse2 flex-nowrap" id="myNavbar">
+        @if (User.Identity.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "U2F", FormMethod.Post, new { id = "logoutForm", @class = "" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        @Html.ActionLink("Hello " + User.Identity.Name + " !", "Index", "Profile", routeValues: null, htmlAttributes: new { title = "Manage", @class = "nav-link m-1 menu-item text-nowrap" })
+                    </li>
+                    <li class="nav-item"><a href="javascript:document.getElementById('logoutForm').submit()" class="nav-link m-1 menu-item text-nowrap">Log off</a></li>
+                </ul>
+            }
+        }
+        else
+        {
+            <ul class="nav navbar-nav">
+                <li class="nav-item">@Html.ActionLink("Login", "Login", "U2F", new { id = "login" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Register", "Register", "U2F", new { id = "register" }, new { @class = "nav-link" })</li>
+            </ul>
+        }
+    </div><!--/.nav-collapse -->
 </nav>
 
 <div class="container">
@@ -98,11 +93,11 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 </environment>
 <environment names="Staging,Production">
-    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+    <script src="~/lib/jquery/dist/jquery.min.js"
             asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
             asp-fallback-test="window.jQuery">
     </script>
-    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.6/bootstrap.min.js"
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"
             asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
             asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
     </script>
