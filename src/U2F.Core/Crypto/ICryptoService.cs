@@ -14,8 +14,8 @@ namespace U2F.Core.Crypto
         /// <summary>
         /// Checks the signature.
         /// </summary>
-        /// <param name="certificate">The key.</param>
-        /// <param name="signedBytes">The source.</param>
+        /// <param name="certificate">The certificate with a public key.</param>
+        /// <param name="signedBytes">The signed data.</param>
         /// <param name="signature">The signature.</param>
         /// <returns></returns>
         bool CheckSignature(X509Certificate2 certificate, byte[] signedBytes, byte[] signature);
@@ -24,26 +24,12 @@ namespace U2F.Core.Crypto
         /// <summary>
         /// Checks the signature.
         /// </summary>
-        /// <param name="certificate">The key.</param>
-        /// <param name="signedBytes">The source.</param>
+        /// <param name="publicKey">The raw public key.</param>
+        /// <param name="signedBytes">The signed data.</param>
         /// <param name="signature">The signature.</param>
         /// <returns></returns>
-        bool CheckSignature(CngKey certificate, byte[] signedBytes, byte[] signature);
-
-        /// <summary>
-        /// Decodes the public key.
-        /// </summary>
-        /// <param name="encodedPublicKey">The encoded public key.</param>
-        /// <returns></returns>
-        CngKey DecodePublicKey(X509Certificate2 encodedPublicKey);
-
-        /// <summary>
-        /// Encoding the raw byte[] key to Cngkey.
-        /// </summary>
-        /// <param name="rawKey">Raw byte[] should be 65 bytes in length.</param>
-        /// <returns></returns>
-        CngKey EncodePublicKey(byte[] rawKey);
-
+        bool CheckSignature(byte[] publicKey, byte[] signedBytes, byte[] signature);
+        
         /// <summary>
         /// Hashes the specified bytes.
         /// </summary>

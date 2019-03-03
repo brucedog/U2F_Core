@@ -110,7 +110,7 @@ namespace U2F.Core.Models
                 Crypto.U2F.Crypto.Hash(clientData));
 
             Crypto.U2F.Crypto.CheckSignature(
-                Crypto.U2F.Crypto.EncodePublicKey(publicKey),
+                publicKey,
                 signedBytes,
                 Signature);
         }
