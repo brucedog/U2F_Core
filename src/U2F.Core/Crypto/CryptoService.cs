@@ -10,10 +10,6 @@ namespace U2F.Core.Crypto
     {
         private SHA256 _sha256 = SHA256.Create();
         private RandomNumberGenerator _randomNumberGenerator;
-        private const string SignatureError = "Error when verifying signature";
-        private const string ErrorDecodingPublicKey = "Error when decoding public key";
-        private const string InvalidArgumentException = "The arguments passed the were not valid";
-        private const string Sha256Exception = "Error when computing SHA-256";
 
         public CryptoService()
         {
@@ -31,7 +27,7 @@ namespace U2F.Core.Crypto
             }
             catch (Exception exception)
             {
-                throw new U2fException(ErrorDecodingPublicKey, exception);
+                throw new U2fException(U2fException.ErrorDecodingPublicKey, exception);
             }
         }
 
@@ -43,13 +39,9 @@ namespace U2F.Core.Crypto
 
                 return ConvertPublicKey(rawData);
             }
-            catch (InvalidKeySpecException exception)
-            {
-                throw new U2fException(Resources.SignatureError, exception);
-            }
             catch (Exception exception)
             {
-                throw new U2fException(ErrorDecodingPublicKey, exception);
+                throw new U2fException(U2fException.ErrorDecodingPublicKey, exception);
             }
         }
 
@@ -62,50 +54,42 @@ namespace U2F.Core.Crypto
                 if (cngPubKey == null
                     || signedBytes == null || signedBytes.Length == 0
                     || signature == null || signature.Length == 0)
-                    throw new ArgumentException(InvalidArgumentException);
+                    throw new U2fException(U2fException.InvalidArguments);
 
                 bool result = VerifySignedBytesAgainstSignature(cngPubKey, signedBytes, signature);
 
-                if(!result)
-                    throw new U2fException(SignatureError);
+                if (!result)
+                    throw new U2fException(U2fException.SignatureError);
 
                 return true;
             }
-            catch (InvalidKeySpecException exception)
-            {
-                throw new U2fException(SignatureError, exception);
-            }
             catch (Exception exception)
             {
-                throw new U2fException(SignatureError, exception);
+                throw new U2fException(U2fException.SignatureError, exception);
             }
         }
 
-        public bool CheckSignature(X509Certificate2 attestationCertificate, byte[] signedBytes, byte[] signature)
+        public bool CheckSignature(X509Certificate2 certificate, byte[] signedBytes, byte[] signature)
         {
             try
             {
-                if (attestationCertificate == null
+                if (certificate == null
                     || signedBytes == null || signedBytes.Length == 0
                     || signature == null || signature.Length == 0)
-                    throw new ArgumentException(InvalidArgumentException);
+                    throw new U2fException(U2fException.InvalidArguments);
 
-                CngKey publicKey = PublicKeyFromCertificate(attestationCertificate);
+                CngKey publicKey = PublicKeyFromCertificate(certificate);
 
                 bool result = VerifySignedBytesAgainstSignature(publicKey, signedBytes, signature);
 
                 if (!result)
-                    throw new U2fException(SignatureError);
+                    throw new U2fException(U2fException.SignatureError);
 
                 return true;
             }
-            catch (InvalidKeySpecException exception)
-            {
-                throw new U2fException(SignatureError, exception);
-            }
             catch (Exception exception)
             {
-                throw new U2fException(SignatureError, exception);
+                throw new U2fException(U2fException.SignatureError, exception);
             }
         }
 
@@ -132,7 +116,7 @@ namespace U2F.Core.Crypto
             }
             catch (Exception exception)
             {
-                throw new UnsupportedOperationException(Sha256Exception, exception);
+                throw new UnsupportedOperationException(UnsupportedOperationException.Sha256Exception, exception);
             }
         }
 
@@ -148,8 +132,8 @@ namespace U2F.Core.Crypto
 
         private CngKey ConvertPublicKey(byte[] rawData)
         {
-            if (rawData == null || rawData.Length == 0 || rawData.Length != 65)
-                throw new ArgumentException(InvalidArgumentException);
+            if (rawData == null || rawData.Length != 65)
+                throw new U2fException(U2fException.InvalidArguments);
 
             var header = new byte[] { 0x45, 0x43, 0x53, 0x31, 0x20, 0x00, 0x00, 0x00 };
             var eccPublicKeyBlob = new byte[72];

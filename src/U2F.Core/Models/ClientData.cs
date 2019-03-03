@@ -27,7 +27,7 @@ namespace U2F.Core.Models
             try
             {
                 if(string.IsNullOrWhiteSpace(clientData))
-                    throw  new ArgumentException(Resources.InvalidArguments);
+                    throw new U2fException(U2fException.InvalidArguments);
 
                 RawClientData = clientData.Base64StringToByteArray().GetString();
 
@@ -94,7 +94,7 @@ namespace U2F.Core.Models
         private string CanonicalizeOrigin(string url)
         {
             if (string.IsNullOrWhiteSpace(url))
-                throw new ArgumentException(Resources.InvalidArguments);
+                throw new U2fException(U2fException.InvalidArguments);
             try
             {
                 Uri uri = new Uri(url);
