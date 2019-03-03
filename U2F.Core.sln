@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "U2F.Demo", "src\U2F.Demo\U2F.Demo\U2F.Demo.csproj", "{BD4FAEA5-3290-4126-83A5-79D8D8871342}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "U2F.Core.Crypto.BouncyCastle", "src\U2F.Core.Crypto.BouncyCastle\U2F.Core.Crypto.BouncyCastle.csproj", "{64296052-9273-475F-AF05-FD1EC69EA031}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{BD4FAEA5-3290-4126-83A5-79D8D8871342}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD4FAEA5-3290-4126-83A5-79D8D8871342}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD4FAEA5-3290-4126-83A5-79D8D8871342}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64296052-9273-475F-AF05-FD1EC69EA031}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64296052-9273-475F-AF05-FD1EC69EA031}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64296052-9273-475F-AF05-FD1EC69EA031}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64296052-9273-475F-AF05-FD1EC69EA031}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +53,9 @@ Global
 		{78B21560-5F9E-4494-83D1-239BDF7D57F6} = {C4989C64-8065-47EF-BD1D-D5BAE0EC9286}
 		{6D8A572D-9F40-4423-B87A-0243DFEE57E0} = {C22ABDC2-97E5-4C12-802C-0877F09DEE03}
 		{BD4FAEA5-3290-4126-83A5-79D8D8871342} = {FD9C495E-9ED2-4B8A-A171-F0BFCBD2C7F6}
+		{64296052-9273-475F-AF05-FD1EC69EA031} = {C4989C64-8065-47EF-BD1D-D5BAE0EC9286}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {828FBD32-2481-43BF-A06A-D3AA8F24F986}
 	EndGlobalSection
 EndGlobal
