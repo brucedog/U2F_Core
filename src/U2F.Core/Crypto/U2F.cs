@@ -6,17 +6,11 @@ namespace U2F.Core.Crypto
 {
     public static class U2F
     {
-        private static ICryptoService _crypto = new CryptoService();
+        public static ICryptoService Crypto { get; set; } = new CryptoService();
         public const string U2FVersion = "U2F_V2";
         private const string AuthenticateTyp = "navigator.id.getAssertion";
         private const string RegisterType = "navigator.id.finishEnrollment";
-
-        public static ICryptoService Crypto
-        {
-            get { return _crypto; }
-            private set { _crypto = value; }
-        }
-
+        
         /// <summary>
         /// Initiates the registration of a device.
         /// </summary>

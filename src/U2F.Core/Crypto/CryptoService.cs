@@ -8,7 +8,6 @@ namespace U2F.Core.Crypto
 {
     public sealed class CryptoService : IDisposable, ICryptoService
     {
-        //private readonly ECCurve _elipiticCurve = ECCurve.CreateFromFriendlyName("secP256r1");
         private SHA256 _sha256 = SHA256.Create();
         private RandomNumberGenerator _randomNumberGenerator;
         private const string SignatureError = "Error when verifying signature";
@@ -24,7 +23,7 @@ namespace U2F.Core.Crypto
             _randomNumberGenerator = RandomNumberGenerator.Create();
         }
 
-        public CngKey EncodePublicKey(byte[] rawKey)
+        private CngKey PublicKeyFromBytes(byte[] rawKey)
         {
             try
             {
@@ -36,7 +35,7 @@ namespace U2F.Core.Crypto
             }
         }
 
-        public CngKey DecodePublicKey(X509Certificate2 certificate)
+        private CngKey PublicKeyFromCertificate(X509Certificate2 certificate)
         {
             try
             {
@@ -54,16 +53,18 @@ namespace U2F.Core.Crypto
             }
         }
 
-        public bool CheckSignature(CngKey certificate, byte[] signedBytes, byte[] signature)
+        public bool CheckSignature(byte[] publicKey, byte[] signedBytes, byte[] signature)
         {
             try
             {
-                if (certificate == null
+                var cngPubKey = PublicKeyFromBytes(publicKey);
+
+                if (cngPubKey == null
                     || signedBytes == null || signedBytes.Length == 0
                     || signature == null || signature.Length == 0)
                     throw new ArgumentException(InvalidArgumentException);
 
-                bool result = VerifySignedBytesAgainstSignature(certificate, signedBytes, signature);
+                bool result = VerifySignedBytesAgainstSignature(cngPubKey, signedBytes, signature);
 
                 if(!result)
                     throw new U2fException(SignatureError);
@@ -89,7 +90,7 @@ namespace U2F.Core.Crypto
                     || signature == null || signature.Length == 0)
                     throw new ArgumentException(InvalidArgumentException);
 
-                CngKey publicKey = DecodePublicKey(attestationCertificate);
+                CngKey publicKey = PublicKeyFromCertificate(attestationCertificate);
 
                 bool result = VerifySignedBytesAgainstSignature(publicKey, signedBytes, signature);
 
