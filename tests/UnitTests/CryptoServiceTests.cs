@@ -9,10 +9,9 @@ namespace U2F.Core.UnitTests
 {
     public class CryptoServiceTests
     {
-        [Fact]
-        public void CryptoService2ChallengesShouldBeDifferent()
+        [Theory, ClassData(typeof(CryptoServices))]
+        public void CryptoService2ChallengesShouldBeDifferent(ICryptoService generator)
         {
-            CryptoService generator = new CryptoService();
             byte[] firstChallenge = generator.GenerateChallenge();
             byte[] secondChallenge = generator.GenerateChallenge();
 

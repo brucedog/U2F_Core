@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using U2F.Core.Crypto;
+using U2F.Core.Crypto.BouncyCastle;
 using U2F.Core.Utils;
+using Xunit;
 
 namespace U2F.Core.UnitTests
 {
-    public static class TestConts
+    internal static class TestConstants
     {
         //Test vectors from FIDO U2F: Raw Message Formats - Draft 4
         public static HashSet<string> TRUSTED_DOMAINS = new HashSet<string>() { "http://example.com" };
@@ -45,5 +48,14 @@ namespace U2F.Core.UnitTests
         public static string SIGN_RESPONSE_DATA_BASE64 = "AQAAAAEwRAIgS18M0XU0zt2MNO4JVw71QqNT30Q2AwzkPUBt6HC4R3gCICZ7uZj6ybcmbrYOfLC16r39W6lhT1PHsiJy7BAEepI_";
 
         public static string ATTESTATION_CERTIFICATE = "MIIBPDCB5KADAgECAgpHkBKAABFVlXNSMAoGCCqGSM49BAMCMBcxFTATBgNVBAMTDEdudWJieSBQaWxvdDAeFw0xMjA4MTQxODI5MzJaFw0xMzA4MTQxODI5MzJaMDExLzAtBgNVBAMTJlBpbG90R251YmJ5LTAuNC4xLTQ3OTAxMjgwMDAxMTU1OTU3MzUyMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEjWF-ZclQjmS8xWc6yCpnmdo8FEZoLCWMRj__31jf0vo-bDeLU9eVxKTf-0GZ7deGLyOrrwIDtLiRG6BWmZThATAKBggqhkjOPQQDAgNHADBEAiBgzbYGHpwiJi0arB2W2McIKbI2ZTHdomiDLLg2vNMN-gIgYxsUWfCeYzAFVyLI2Jt_SIg7kIm4jWDR2XlZArMEEN8";
+    }
+    
+    internal class CryptoServices : TheoryData<ICryptoService>
+    {
+        public CryptoServices()
+        {
+            Add(new CryptoService());
+            Add(new BouncyCastleCryptoService());
+        }
     }
 }

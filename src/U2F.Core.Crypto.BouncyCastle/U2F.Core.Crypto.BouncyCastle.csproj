@@ -1,11 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Description>Provides FIDO U2F for .NET Core</Description>
+    <Description>Provides ICryptoService for U2F.Core using BouncyCastle</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
     <TargetFrameworks>netstandard2.0;net45;net462</TargetFrameworks>
-    <AssemblyName>U2F.Core</AssemblyName>
-    <PackageId>U2F.Core</PackageId>
+    <AssemblyName>U2F.Core.Crypto.BouncyCastle</AssemblyName>
+    <PackageId>U2F.Core.Crypto.BouncyCastle</PackageId>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
@@ -14,20 +14,19 @@
     <RepositoryUrl>https://github.com/brucedog/U2F_Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>U2F .NET Core FIDO</PackageTags>
-    <PackageReleaseNotes>Updated for support of netstandard 2.0.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
-    <Copyright>2016</Copyright>
+    <Copyright>2019</Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.4.0" />
+  <ItemGroup>
+    <ProjectReference Include="..\U2F.Core\U2F.Core.csproj" />
   </ItemGroup>
 
 </Project>

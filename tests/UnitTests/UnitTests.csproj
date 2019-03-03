@@ -13,6 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\U2F.Core.Crypto.BouncyCastle\U2F.Core.Crypto.BouncyCastle.csproj" />
     <ProjectReference Include="..\..\src\U2F.Core\U2F.Core.csproj" />
   </ItemGroup>
 
