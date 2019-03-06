@@ -10,14 +10,12 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <script src="@Url.Content("~/js/u2f-api-1.1.js")"></script>
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <script src="@Url.Content("~/js/u2f-api.min.js")"></script>
     </environment>
     @RenderSection("specialJS", required: false)
 </head>
@@ -48,7 +46,7 @@
         }
         else
         {
-            <ul class="nav navbar-nav">
+            <ul class="navbar-nav ml-auto">
                 <li class="nav-item">@Html.ActionLink("Login", "Login", "U2F", new { id = "login" }, new { @class = "nav-link" })</li>
                 <li class="nav-item">@Html.ActionLink("Register", "Register", "U2F", new { id = "register" }, new { @class = "nav-link" })</li>
             </ul>
@@ -64,16 +62,6 @@
         @Html.ValidationMessage("CustomError")
     </div>
     <br />
-    <div class="app_hide alert alert-danger" style="display: none;">
-        <p>This demo requires Chrome 44+!</p>
-        <div class="not_chrome" style="display: none;">
-            <p><strong>Your current browser is not yet supported.</strong></p>
-            <a class="btn" href="https://www.google.com/chrome/browser/">Get Chrome</a>
-        </div>
-        <div class="chrome" style="display: none;">
-            Update your chrome friend
-        </div>
-    </div>
 
     @RenderSection("featured", required: false)
     @RenderBody()
@@ -104,19 +92,6 @@
     <script src="~/js/site.min.js" asp-append-version="true"></script>
 </environment>
 @RenderSection("scripts", required: false)
-<script type="text/javascript">
-    // TODO need to figure out this
-//    $(document).ready(function () {
-//        if (!bowser.chrome) {
-//            $(".app_hide").show();
-//            $('.not_chrome').show();
-//        }
-//
-//        if (window.u2f === undefined) {
-//            $(".app_hide").show();
-//            $(".chrome").show();
-//        }
-//    });
-</script>
+
 </body>
 </html>
