@@ -3,31 +3,37 @@
   <PropertyGroup>
     <Description>Provides FIDO U2F for .NET Core</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
-    <TargetFrameworks>netstandard2.0;net45;net462</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net45;net462;net47</TargetFrameworks>
     <AssemblyName>U2F.Core</AssemblyName>
     <PackageId>U2F.Core</PackageId>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <Version>1.0.5</Version>
+    <Version>2.0.1</Version>
     <RepositoryUrl>https://github.com/brucedog/U2F_Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>U2F .NET Core FIDO</PackageTags>
-    <PackageReleaseNotes>Updated for support of netstandard 2.0.</PackageReleaseNotes>
+    <PackageReleaseNotes></PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
     <Copyright>2016</Copyright>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>C:\Users\brucedog\Documents\github\u2f_core\U2FCore.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <None Include="..\..\U2FCore.pfx" Link="U2FCore.pfx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.4.0" />
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.5.0" />
   </ItemGroup>
 
 </Project>
