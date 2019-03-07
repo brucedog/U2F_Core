@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5DF56E0-1ED7-4885-8E52-0108E65C2CC1}"
 	ProjectSection(SolutionItems) = preProject
 		README.md = README.md
+		U2FCore.pfx = U2FCore.pfx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C22ABDC2-97E5-4C12-802C-0877F09DEE03}"
@@ -20,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "tests\UnitTest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "U2F.Demo", "src\U2F.Demo\U2F.Demo\U2F.Demo.csproj", "{BD4FAEA5-3290-4126-83A5-79D8D8871342}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "U2F.Core.Crypto.BouncyCastle", "src\U2F.Core.Crypto.BouncyCastle\U2F.Core.Crypto.BouncyCastle.csproj", "{64296052-9273-475F-AF05-FD1EC69EA031}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "U2F.Core.Crypto.BouncyCastle", "src\U2F.Core.Crypto.BouncyCastle\U2F.Core.Crypto.BouncyCastle.csproj", "{64296052-9273-475F-AF05-FD1EC69EA031}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
