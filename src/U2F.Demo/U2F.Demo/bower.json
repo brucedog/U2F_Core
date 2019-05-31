@@ -3,13 +3,13 @@
   "private": true,
   "dependencies": {
     "bootstrap": "v4.3.1",
-    "jquery": "3.3.1",
+    "jquery": "3.4.1",
     "jquery-validation": "1.19.0",
     "jquery-validation-unobtrusive": "v3.2.11"
   },
   "resolutions": {
     "bootstrap": "v4.3.1",
-    "jquery": "3.3.1",
+    "jquery": "3.4.1",
     "jquery-validation": "1.19.0",
     "jquery-validation-unobtrusive": "v3.2.11"
   }
