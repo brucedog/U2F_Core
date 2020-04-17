@@ -3,10 +3,9 @@
   <PropertyGroup>
     <Description>Provides FIDO U2F for .NET Core</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
-    <TargetFrameworks>netstandard2.0;net45;net462;net47</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>U2F.Core</AssemblyName>
     <PackageId>U2F.Core</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -14,7 +13,6 @@
     <RepositoryUrl>https://github.com/brucedog/U2F_Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>U2F .NET Core FIDO</PackageTags>
-    <PackageReleaseNotes></PackageReleaseNotes>
     <PackageLicenseUrl>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
     <Copyright>2016</Copyright>

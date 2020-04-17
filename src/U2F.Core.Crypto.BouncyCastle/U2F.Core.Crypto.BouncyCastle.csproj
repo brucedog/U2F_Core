@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides ICryptoService for U2F.Core using BouncyCastle for Linux support.</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
-    <TargetFrameworks>netstandard2.0;net45;net462;net47</TargetFrameworks>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <AssemblyName>U2F.Core.Crypto.BouncyCastle</AssemblyName>
     <PackageId>U2F.Core.Crypto.BouncyCastle</PackageId>
     <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
