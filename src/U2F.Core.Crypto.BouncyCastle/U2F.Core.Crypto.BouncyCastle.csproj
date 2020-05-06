@@ -3,10 +3,9 @@
   <PropertyGroup>
     <Description>Provides ICryptoService for U2F.Core using BouncyCastle for Linux support.</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
-    <TargetFrameworks>netstandard2.0;net45;net462;net47</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>U2F.Core.Crypto.BouncyCastle</AssemblyName>
     <PackageId>U2F.Core.Crypto.BouncyCastle</PackageId>
-    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -15,20 +14,15 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>U2F .NET Core FIDO</PackageTags>
     <PackageReleaseNotes>Support for linux.</PackageReleaseNotes>
-    <PackageLicenseUrl>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
     <Copyright>2019</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>C:\Users\brucedog\Documents\github\u2f_core\U2FCore.pfx</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\U2FCore.pfx" Link="U2FCore.pfx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Portable.BouncyCastle" Version="1.8.5" />
+    <PackageReference Include="Portable.BouncyCastle" Version="1.8.6.7" />
   </ItemGroup>
 
   <ItemGroup>
