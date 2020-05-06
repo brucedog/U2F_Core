@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Provides FIDO U2F for .NET Core</Description>
     <Authors>Bryce Foster (brucedog@bfoster.net)</Authors>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>U2F.Core</AssemblyName>
     <PackageId>U2F.Core</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
@@ -13,25 +13,20 @@
     <RepositoryUrl>https://github.com/brucedog/U2F_Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>U2F .NET Core FIDO</PackageTags>
-    <PackageLicenseUrl>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageLicense>https://github.com/brucedog/U2F_Core/blob/master/LICENSE</PackageLicense>
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
     <Copyright>2016</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>C:\Users\brucedog\Documents\github\u2f_core\U2FCore.pfx</AssemblyOriginatorKeyFile>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\U2FCore.pfx" Link="U2FCore.pfx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Security.Cryptography.Primitives" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.5.0" />
+    <PackageReference Include="System.Security.Cryptography.Cng" Version="4.7.0" />
   </ItemGroup>
 
 </Project>
