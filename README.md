@@ -1,3 +1,5 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brucedog_U2F_Core&metric=alert_status)](https://sonarcloud.io/dashboard?id=brucedog_U2F_Core)
+
 ## .NET Universal 2nd Factor (U2F) 
 
 This repository provides functionality for working with the server side aspects of the U2F protocol on .NET core framework.  
