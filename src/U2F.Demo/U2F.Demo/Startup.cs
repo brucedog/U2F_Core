@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using U2F.Demo.DataStore;
 using U2F.Demo.Models;
 using U2F.Demo.Services;
@@ -21,7 +21,7 @@ namespace U2F.Demo
         }
 
         public IConfiguration Configuration { get; }
-        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -58,23 +58,20 @@ namespace U2F.Demo
                 options.User.RequireUniqueEmail = false;
             });
 
-            services.AddMvc();
-
+            //services.AddMvc();
+            services.AddControllersWithViews();
+            services.AddRazorPages();
             var connectionString = Configuration["connectionStrings:DBConnectionString"];
-            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));            
+            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));
             services.AddScoped<IMembershipService, MembershipService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -82,16 +79,20 @@ namespace U2F.Demo
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            app.UseRouting();
 
-            app.UseMvc(routes =>
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
-                    name: "default_route",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "U2F", action = "Index" });
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=U2F}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
 
             try
@@ -107,5 +108,6 @@ namespace U2F.Demo
             {
                 Console.WriteLine(e.Message);
             }
-        }        }
+        }
+    }
 }
