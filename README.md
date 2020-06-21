@@ -1,4 +1,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=brucedog_U2F_Core&metric=alert_status)](https://sonarcloud.io/dashboard?id=brucedog_U2F_Core)
+![.NET Core](https://github.com/brucedog/U2F_Core/workflows/.NET%20Core/badge.svg)
+[![NuGet](https://img.shields.io/nuget/dt/U2F.Core.svg)](https://www.nuget.org/packages/U2F.Core)
 
 ## .NET Universal 2nd Factor (U2F) 
 
