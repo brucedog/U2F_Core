@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using U2F.Core.Exceptions;
@@ -14,42 +15,14 @@ namespace U2F.Core.Crypto
         public CryptoService()
         {
             _sha256.Initialize();
-            // TODO i should be able to get to the sha256 
-            //_randomNumberGenerator = RandomNumberGenerator.Create("Sha256"); 
             _randomNumberGenerator = RandomNumberGenerator.Create();
-        }
-
-        private CngKey PublicKeyFromBytes(byte[] rawKey)
-        {
-            try
-            {
-                return ConvertPublicKey(rawKey);
-            }
-            catch (Exception exception)
-            {
-                throw new U2fException(U2fException.ErrorDecodingPublicKey, exception);
-            }
-        }
-
-        private CngKey PublicKeyFromCertificate(X509Certificate2 certificate)
-        {
-            try
-            {
-                byte[] rawData = certificate.PublicKey.EncodedKeyValue.RawData;
-
-                return ConvertPublicKey(rawData);
-            }
-            catch (Exception exception)
-            {
-                throw new U2fException(U2fException.ErrorDecodingPublicKey, exception);
-            }
         }
 
         public bool CheckSignature(byte[] publicKey, byte[] signedBytes, byte[] signature)
         {
             try
             {
-                var cngPubKey = PublicKeyFromBytes(publicKey);
+                var cngPubKey = ConvertPublicKey(publicKey);
 
                 if (cngPubKey == null
                     || signedBytes == null || signedBytes.Length == 0
@@ -77,10 +50,8 @@ namespace U2F.Core.Crypto
                     || signedBytes == null || signedBytes.Length == 0
                     || signature == null || signature.Length == 0)
                     throw new U2fException(U2fException.InvalidArguments);
-
-                CngKey publicKey = PublicKeyFromCertificate(certificate);
-
-                bool result = VerifySignedBytesAgainstSignature(publicKey, signedBytes, signature);
+                
+                bool result = VerifySignedBytesAgainstSignature(certificate.GetECDsaPublicKey(), signedBytes, signature);
 
                 if (!result)
                     throw new U2fException(U2fException.SignatureError);
@@ -120,30 +91,34 @@ namespace U2F.Core.Crypto
             }
         }
 
-        private bool VerifySignedBytesAgainstSignature(CngKey publicKey, byte[] signedBytes, byte[] signature)
+        private bool VerifySignedBytesAgainstSignature(ECDsa publicKey, byte[] signedBytes, byte[] signature)
         {
-            using (ECDsaCng verifier = new ECDsaCng(publicKey))
-            {
-                verifier.HashAlgorithm = CngAlgorithm.Sha256;
-                bool result = verifier.VerifyData(signedBytes, signature.FromAsn1Signature());
-                return result;
-            }
+            bool result = publicKey.VerifyData(signedBytes, signature.FromAsn1Signature(), HashAlgorithmName.SHA256);
+            return result;
         }
 
-        private CngKey ConvertPublicKey(byte[] rawData)
+        /// <summary>
+        /// Coverts byte array into a P256 EC Public key
+        /// </summary>
+        /// <param name="rawData"></param>
+        /// <returns>NIST P256 Public key</returns>
+        private ECDsa ConvertPublicKey(byte[] rawData)
         {
             if (rawData == null || rawData.Length != 65)
                 throw new U2fException(U2fException.InvalidArguments);
+            
+            var pubKeyX = rawData.Skip(1).Take(32).ToArray();
+            var pubKeyY = rawData.Skip(33).ToArray();
 
-            var header = new byte[] { 0x45, 0x43, 0x53, 0x31, 0x20, 0x00, 0x00, 0x00 };
-            var eccPublicKeyBlob = new byte[72];
-
-            Array.Copy(header, 0, eccPublicKeyBlob, 0, 8);
-            Array.Copy(rawData, 1, eccPublicKeyBlob, 8, 64);
-
-            CngKey key = CngKey.Import(eccPublicKeyBlob, CngKeyBlobFormat.EccPublicBlob);
-
-            return key;
+            return ECDsa.Create(new ECParameters
+            {
+                Curve = ECCurve.NamedCurves.nistP256,
+                Q = new ECPoint
+                {
+                    X = pubKeyX,
+                    Y = pubKeyY
+                }
+            });
         }
 
         public void Dispose()
