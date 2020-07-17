@@ -18,6 +18,13 @@ namespace U2F.Core.Crypto
             _randomNumberGenerator = RandomNumberGenerator.Create();
         }
 
+        /// <summary>
+        /// Validates signed bytes against a signature using the raw bytes of the EC public key.
+        /// </summary>
+        /// <param name="publicKey">Raw bytes of the EC public key</param>
+        /// <param name="signedBytes">Bytes signed with private key</param>
+        /// <param name="signature">signature to compare against</param>
+        /// <returns>true if valid else throws an exception that the signature does not match the signed bytes.</returns>
         public bool CheckSignature(byte[] publicKey, byte[] signedBytes, byte[] signature)
         {
             try
@@ -42,6 +49,13 @@ namespace U2F.Core.Crypto
             }
         }
 
+        /// <summary>
+        /// Verifies the signed bytes against the signature using the EC public key in the Cert provided. 
+        /// </summary>
+        /// <param name="certificate">Cert containing EC public key</param>
+        /// <param name="signedBytes">Bytes signed with private key</param>
+        /// <param name="signature">signature to compare against</param>
+        /// <returns>true if valid else throws an exception that the signature does not match the signed bytes.</returns>
         public bool CheckSignature(X509Certificate2 certificate, byte[] signedBytes, byte[] signature)
         {
             try
@@ -91,6 +105,9 @@ namespace U2F.Core.Crypto
             }
         }
 
+        /// <summary>
+        /// Simplified method that validates signed bytes against the signature using a EC public key.
+        /// </summary>
         private bool VerifySignedBytesAgainstSignature(ECDsa publicKey, byte[] signedBytes, byte[] signature)
         {
             bool result = publicKey.VerifyData(signedBytes, signature.FromAsn1Signature(), HashAlgorithmName.SHA256);

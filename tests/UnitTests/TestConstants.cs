@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using U2F.Core.Crypto;
-using U2F.Core.Crypto.BouncyCastle;
 using U2F.Core.Utils;
 using Xunit;
 
@@ -55,7 +54,6 @@ namespace U2F.Core.UnitTests
         public CryptoServices()
         {
             Add(new CryptoService());
-            Add(new BouncyCastleCryptoService());
         }
     }
 }
