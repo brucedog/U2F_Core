@@ -1,14 +1,26 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <!-- Required elements-->
-        <id></id>
-        <version></version>
-        <description>TODO</description>
-        <authors>Bryce Foster</authors>
-
-        <!-- Optional elements -->
-        <!-- ... -->
-    </metadata>
-    <!-- Optional 'files' node -->
+  <metadata>
+    <id>U2F.Core</id>
+    <version>2.0.0</version>
+    <authors>Bryce Foster (brucedog@bfoster.net)</authors>
+    <owners>Bryce Foster (brucedog@bfoster.net)</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>2016</copyright>
+    <tags>U2F .NET Core FIDO</tags>
+	<copyright>2016</copyright>
+    <description>Cross platform library that provides FIDO U2F for .NET Core</description>
+    <summary>Cross platform library that provides FIDO U2F for .NET Core</summary>
+  </metadata>
+  <files>
+    <file src="src\U2F.Core\bin\Release\netstandard2.0\U2F.Core.deps.json" target="U2F.Core.deps.json" />
+    <file src="src\U2F.Core\bin\Release\netstandard2.0\U2F.Core.dll" target="U2F.Core.dll" />
+    <file src="src\U2F.Core\bin\Release\netstandard2.0\U2F.Core.pdb" target="U2F.Core.pdb" />
+  </files>
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+        <dependency id="System.Security.Cryptography.Primitives" version="4.3.0" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
 </package>
