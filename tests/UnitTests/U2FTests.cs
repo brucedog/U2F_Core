@@ -1,5 +1,4 @@
 ﻿using U2F.Core.Crypto;
-using U2F.Core.Crypto.BouncyCastle;
 using U2F.Core.Models;
 using U2F.Core.Utils;
 using Xunit;
