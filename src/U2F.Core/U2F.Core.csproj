@@ -17,7 +17,7 @@
     <PackageProjectUrl>https://github.com/brucedog/U2F_Core</PackageProjectUrl>
     <Copyright>2016</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <SignAssembly>false</SignAssembly>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
