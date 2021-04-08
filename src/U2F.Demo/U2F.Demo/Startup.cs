@@ -25,7 +25,8 @@ namespace U2F.Demo
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // TODO double check identity role is configured correctly
+            services.AddDbContext<U2FContext>(options => options.UseInMemoryDatabase("DemoDb"));
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<U2FContext>()
                 .AddDefaultTokenProviders();
@@ -61,8 +62,6 @@ namespace U2F.Demo
             //services.AddMvc();
             services.AddControllersWithViews();
             services.AddRazorPages();
-            var connectionString = Configuration["connectionStrings:DBConnectionString"];
-            services.AddDbContext<U2FContext>(o => o.UseSqlServer(connectionString));
             services.AddScoped<IMembershipService, MembershipService>();
         }
 
