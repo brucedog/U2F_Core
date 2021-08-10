@@ -12,7 +12,7 @@ namespace U2F.Demo.DataStore
 
         public U2FContext(DbContextOptions<U2FContext> options, ILogger<U2FContext> logger)
            : base(options)
-        {
+        {   
             _logger = logger;
         }
 

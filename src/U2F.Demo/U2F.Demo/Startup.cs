@@ -28,7 +28,9 @@ namespace U2F.Demo
             services.AddDbContext<U2FContext>(options => options.UseInMemoryDatabase("DemoDb"));
 
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<U2FContext>()
+                .AddEntityFrameworkStores<U2FContext>(
+                
+                )
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
@@ -62,6 +64,8 @@ namespace U2F.Demo
             //services.AddMvc();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            var connectionString = Configuration["connectionStrings:DBConnectionString"];
+            services.AddDbContext<U2FContext>(o => o.UseInMemoryDatabase(Guid.NewGuid().ToString()));
             services.AddScoped<IMembershipService, MembershipService>();
         }
 
