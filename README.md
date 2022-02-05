@@ -4,6 +4,7 @@
 
 ## .NET Universal 2nd Factor (U2F) 
 
+U2F is being depratcated in favor of FIDO2. A dotnet version can be found here https://github.com/passwordless-lib/fido2-net-lib
 This repository provides functionality for working with the server side aspects of the U2F protocol on .NET core framework.  
 
 ## Working Demo Site  
